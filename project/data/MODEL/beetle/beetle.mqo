@@ -4,8 +4,8 @@ Format Text Ver 1.0
 Scene {
 	pos -179.2646 -147.5174 39062.5000
 	lookat 0.0000 0.0000 0.0000
-	head 2.9964
-	pich -0.1208
+	head 8.0564
+	pich 0.4992
 	bank 0.0000
 	ortho 0
 	zoom2 0.1920
@@ -18,13 +18,13 @@ Scene {
 	}
 }
 Material 4 {
-	"blinn3SG" col(0.060 0.040 0.040 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
+	"blinn3SG" col(0.388 0.255 0.255 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 	"lambert73SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("ac2_01.png")
 	"lambert75SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("ac2_02.png")
 	"lambert15SG" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("arms_01.png")
 }
 Object "00_body" {
-	visible 15
+	visible 0
 	locking 0
 	shading 1
 	facet 59.5
@@ -1926,7 +1926,7 @@ Object "06_legRU" {
 	}
 }
 Object "07_legRD" {
-	visible 0
+	visible 15
 	locking 0
 	shading 1
 	facet 59.5
