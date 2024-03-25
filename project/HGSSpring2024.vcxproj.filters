@@ -198,6 +198,9 @@
     <ClCompile Include="code\flowerPlayer.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="code\flowerManager.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\afterimage.h">
@@ -381,6 +384,9 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="code\player.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="code\flowerManager.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>
