@@ -1,6 +1,6 @@
 //*****************************************************
 //
-// 花の処理[flower.cpp]
+// 網の処理[net.cpp]
 // Author:髙山桃也
 //
 //*****************************************************
@@ -8,10 +8,11 @@
 //*****************************************************
 // インクルード
 //*****************************************************
-#include "flower.h"
+#include "net.h"
 #include "collision.h"
 #include "player.h"
-#include "flowerManager.h"
+#include "object3D.h"
+#include "texture.h"
 
 //*****************************************************
 // 定数定義
@@ -19,80 +20,65 @@
 namespace
 {
 const float RADIUS_COLLISION = 100.0f;	// 当たり判定の半径
-const float ADD_SEED = 5.0f;	// 種付与時間
 }
 
 //*****************************************************
 // 静的メンバ変数宣言
 //*****************************************************
-int CFlower::m_nNumAll = 0;	// 総数
+int CNet::m_nNumAll = 0;	// 総数
 
 //=====================================================
 // コンストラクタ
 //=====================================================
-CFlower::CFlower(int nPriority)
+CNet::CNet(int nPriority)
 {
 	m_pCollisionSphere = nullptr;
+	m_pShadow = nullptr;
 
 	m_nNumAll++;
-
-	CFlowerManager *pManager = CFlowerManager::GetInstance();
-
-	if (pManager != nullptr)
-	{
-		pManager->PushBack(this);
-	}
 }
 
 //=====================================================
 // デストラクタ
 //=====================================================
-CFlower::~CFlower()
+CNet::~CNet()
 {
 	m_nNumAll--;
-
-	CFlowerManager *pManager = CFlowerManager::GetInstance();
-
-	if (pManager != nullptr)
-	{
-		pManager->Remove(this);
-	}
 }
 
 //=====================================================
 // 生成処理
 //=====================================================
-CFlower *CFlower::Create(void)
+CNet *CNet::Create(D3DXVECTOR3 pos)
 {
-	CFlower *pFlower = nullptr;
+	CNet *pNet = nullptr;
 
-	if (pFlower == nullptr)
+	if (pNet == nullptr)
 	{
-		pFlower = new CFlower;
+		pNet = new CNet;
 
-		if (pFlower != nullptr)
+		if (pNet != nullptr)
 		{
-			pFlower->Init();
+			pNet->Init();
+
+			pNet->SetPosition(pos);
 		}
 	}
 
-	return pFlower;
+	return pNet;
 }
 
 //=====================================================
 // 初期化処理
 //=====================================================
-HRESULT CFlower::Init(void)
+HRESULT CNet::Init(void)
 {
 	// 継承クラスの初期化
 	CObjectX::Init();
 
-	// 影の有効化
-	EnableShadow(true);
-
 	if (m_pCollisionSphere == nullptr)
 	{// 当たり判定生成
-		m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_FLOWER, CCollision::TYPE_SPHERE, this);
+		m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_NET, CCollision::TYPE_SPHERE, this);
 
 		if (m_pCollisionSphere != nullptr)
 		{
@@ -101,10 +87,23 @@ HRESULT CFlower::Init(void)
 		}
 	}
 
-	int nIdx = CModel::Load("data\\MODEL\\flower\\BigFlower.x");
-
 	// モデル読込
+	int nIdx = CModel::Load("data\\MODEL\\Net\\BigNet.x");
 	BindModel(nIdx);
+
+	// 影生成
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+		if (m_pShadow != nullptr)
+		{
+			int nIdxTex = Texture::GetIdx("data\\TEXTURE\\EFFECT\\effect000.png");
+			m_pShadow->SetIdxTexture(nIdxTex);
+
+			m_pShadow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+		}
+	}
 
 	return S_OK;
 }
@@ -112,10 +111,16 @@ HRESULT CFlower::Init(void)
 //=====================================================
 // 終了処理
 //=====================================================
-void CFlower::Uninit(void)
+void CNet::Uninit(void)
 {
 	// 当たり判定削除
 	DeleteCollision();
+
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
 
 	// 継承クラスの終了
 	CObjectX::Uninit();
@@ -124,7 +129,7 @@ void CFlower::Uninit(void)
 //=====================================================
 // 当たり判定の削除
 //=====================================================
-void CFlower::DeleteCollision(void)
+void CNet::DeleteCollision(void)
 {
 	if (m_pCollisionSphere != nullptr)
 	{// 当たり判定の消去
@@ -137,7 +142,7 @@ void CFlower::DeleteCollision(void)
 //=====================================================
 // 更新処理
 //=====================================================
-void CFlower::Update(void)
+void CNet::Update(void)
 {
 	// 継承クラスの更新
 	CObjectX::Update();
@@ -146,7 +151,7 @@ void CFlower::Update(void)
 //=====================================================
 // 描画処理
 //=====================================================
-void CFlower::Draw(void)
+void CNet::Draw(void)
 {
 	// 継承クラスの描画
 	CObjectX::Draw();
@@ -155,32 +160,17 @@ void CFlower::Draw(void)
 //=====================================================
 // 位置設定
 //=====================================================
-void CFlower::SetPosition(D3DXVECTOR3 pos)
+void CNet::SetPosition(D3DXVECTOR3 pos)
 {
 	if (m_pCollisionSphere != nullptr)
 	{
 		m_pCollisionSphere->SetPosition(pos);
 	}
 
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->SetPosition(D3DXVECTOR3(pos.x, 1.0f, pos.z));
+	}
+
 	CObjectX::SetPosition(pos);
-}
-
-//=====================================================
-// ヒット処理
-//=====================================================
-void CFlower::Hit(float fDamage)
-{
-	if (m_pCollisionSphere == nullptr)
-	{
-		return;
-	}
-
-	DeleteCollision();
-
-	CPlayer *pPlayer = CPlayer::GetInstance();
-
-	if (pPlayer != nullptr)
-	{
-		pPlayer->AddTimeSeed(ADD_SEED);
-	}
 }

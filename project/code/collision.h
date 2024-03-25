@@ -30,6 +30,7 @@ public:
 		TAG_NONE = 0,	// 何でもない
 		TAG_PLAYER,	// プレイヤー
 		TAG_FLOWER,	// 花
+		TAG_NET,	// 網
 		TAG_BLOCK,	// ブロック
 		TAG_MAX
 	}TAG;

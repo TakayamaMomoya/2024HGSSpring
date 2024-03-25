@@ -50,7 +50,7 @@ HRESULT CObjectX::Init(void)
 
 	if (m_pModel == nullptr)
 	{
-		int nIdx = CModel::Load("data\\MODEL\\block\\bill00.x");
+		int nIdx = CModel::Load("data\\MODEL\\flower\\SmallFlower_purple.x");
 
 		// ÉÇÉfÉãì«çû
 		BindModel(nIdx);

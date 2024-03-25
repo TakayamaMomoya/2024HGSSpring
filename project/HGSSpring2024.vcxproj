@@ -172,6 +172,7 @@
     <ClCompile Include="code\fan2D.cpp" />
     <ClCompile Include="code\fan3D.cpp" />
     <ClCompile Include="code\flower.cpp" />
+    <ClCompile Include="code\flowerManager.cpp" />
     <ClCompile Include="code\flowerPlayer.cpp" />
     <ClCompile Include="code\game.cpp" />
     <ClCompile Include="code\inpact.cpp" />
@@ -187,6 +188,7 @@
     <ClCompile Include="code\meshfield.cpp" />
     <ClCompile Include="code\model.cpp" />
     <ClCompile Include="code\motion.cpp" />
+    <ClCompile Include="code\net.cpp" />
     <ClCompile Include="code\number.cpp" />
     <ClCompile Include="code\number3D.cpp" />
     <ClCompile Include="code\object.cpp" />
@@ -235,6 +237,7 @@
     <ClInclude Include="code\fan2D.h" />
     <ClInclude Include="code\fan3D.h" />
     <ClInclude Include="code\flower.h" />
+    <ClInclude Include="code\flowerManager.h" />
     <ClInclude Include="code\flowerPlayer.h" />
     <ClInclude Include="code\game.h" />
     <ClInclude Include="code\inpact.h" />
@@ -250,6 +253,7 @@
     <ClInclude Include="code\meshfield.h" />
     <ClInclude Include="code\model.h" />
     <ClInclude Include="code\motion.h" />
+    <ClInclude Include="code\net.h" />
     <ClInclude Include="code\number.h" />
     <ClInclude Include="code\number3D.h" />
     <ClInclude Include="code\object.h" />
