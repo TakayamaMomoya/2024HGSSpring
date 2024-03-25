@@ -34,6 +34,7 @@
 #include "cameraBehavior.h"
 #include "particle.h"
 #include "flower.h"
+#include "score.h"
 
 //*****************************************************
 // É}ÉNÉçíËã`
@@ -110,6 +111,8 @@ HRESULT CGame::Init(void)
 	};
 
 	CFlower::Create();
+
+	CScore::Create();
 
 	return S_OK;
 }

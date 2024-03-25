@@ -67,6 +67,7 @@ public:
 	void Hit(float fDamage);
 	float GetLife(void) { return m_info.fLife; }
 	SParam GetParam(void) { return m_param; }
+	void AddTimeSeed(float fTime) { m_info.fTimerSeed += fTime; }
 
 private:
 	struct SFragMotion
@@ -91,6 +92,7 @@ private:
 		CCollisionCube *pCollisionCube;	// —§•û‘Ì‚Ì“–‚½‚è”»’è
 		bool bLand;	// ’…’n‚µ‚Ä‚¢‚é‚©‚Ç‚¤‚©
 		D3DXVECTOR3 rotDest;	// –Ú•W‚ÌŒü‚«
+		float fTimerSeed;	// ŽíŽžŠÔ
 	};
 
 	void Load(void);
@@ -99,6 +101,7 @@ private:
 	void InputCamera(void);
 	void InputAttack(void);
 	void Rotation(void);
+	void ManageTimeSeed(void);
 	void ManageCollision(void);
 	void ManageState(void);
 	void ManageMotion(void);

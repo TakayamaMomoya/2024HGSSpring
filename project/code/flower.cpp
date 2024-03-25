@@ -10,6 +10,7 @@
 //*****************************************************
 #include "flower.h"
 #include "collision.h"
+#include "player.h"
 
 //*****************************************************
 // ’è”’è‹`
@@ -17,6 +18,7 @@
 namespace
 {
 const float RADIUS_COLLISION = 100.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float ADD_SEED = 5.0f;	// Ží•t—^ŽžŠÔ
 }
 
 //*****************************************************
@@ -148,5 +150,17 @@ void CFlower::SetPosition(D3DXVECTOR3 pos)
 //=====================================================
 void CFlower::Hit(float fDamage)
 {
+	if (m_pCollisionSphere == nullptr)
+	{
+		return;
+	}
+
 	DeleteCollision();
+
+	CPlayer *pPlayer = CPlayer::GetInstance();
+
+	if (pPlayer != nullptr)
+	{
+		pPlayer->AddTimeSeed(ADD_SEED);
+	}
 }

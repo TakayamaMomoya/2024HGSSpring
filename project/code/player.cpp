@@ -255,23 +255,16 @@ void CPlayer::Update(void)
 	// 前回の位置を保存
 	SetPositionOld(pos);
 
-	if (pSlow != nullptr)
-	{
-		float fScale = pSlow->GetScale();
-
-		pos += move * fScale;
-		SetPosition(pos);
-	}
-	else
-	{
-		pos += move;
-		SetPosition(pos);
-	}
+	pos += move;
+	SetPosition(pos);
 
 	move.x += (0 - move.x) * 0.05f;
 	move.z += (0 - move.z) * 0.05f;
 
 	SetMove(move);
+
+	// 種時間管理
+	ManageTimeSeed();
 
 	// 当たり判定の管理
 	ManageCollision();
@@ -484,6 +477,32 @@ void CPlayer::InputAttack(void)
 }
 
 //=====================================================
+// 種時間管理
+//=====================================================
+void CPlayer::ManageTimeSeed(void)
+{
+	if (m_info.fTimerSeed <= 0.0f)
+	{// 種時間切れ
+
+	}
+	else
+	{// 種残ってる場合
+		// 花を咲かせる
+
+
+		// 時間の減少
+		float fDeltaTime = CManager::GetDeltaTime();
+
+		m_info.fTimerSeed -= fDeltaTime;
+
+		if (m_info.fTimerSeed <= 0.0f)
+		{
+			m_info.fTimerSeed = 0.0f;
+		}
+	}
+}
+
+//=====================================================
 // プレイヤーの回転
 //=====================================================
 void CPlayer::Rotation(void)
@@ -561,8 +580,6 @@ void CPlayer::ManageCollision(void)
 	// 当たり判定の追従
 	if (m_info.pCollisionSphere != nullptr)
 	{
-		bool bLandMesh = false;
-		bool bLandBlock = false;
 		int nMotion = GetMotion();
 
 		D3DXVECTOR3 pos = GetPosition();
@@ -771,7 +788,7 @@ void CPlayer::Debug(void)
 
 	pDebugProc->Print("\nプレイヤーの位置[%f,%f,%f]", GetPosition().x, GetPosition().y, GetPosition().z);
 	pDebugProc->Print("\nプレイヤーの移動量[%f,%f,%f]", GetMove().x, GetMove().y, GetMove().z);
-	pDebugProc->Print("\n体力[%f]", m_info.fLife);
+	pDebugProc->Print("\n種時間[%f]", m_info.fTimerSeed);
 	for (int i = 0; i < PARAM_MAX; i++)
 
 	int nMotion = GetMotion();
