@@ -1,7 +1,7 @@
 #==============================================================================
 #
 # 『モーションビューワ』スクリプトファイル [motion.txt]
-# Author : AKIRA TANAKA
+# Author : SHION SATONE
 #
 #==============================================================================
 SCRIPT			# この行は絶対消さないこと！
@@ -14,14 +14,14 @@ NUM_MODEL = 8
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/player/00_body.x		# [0]体
-MODEL_FILENAME = data/MODEL/player/01_head.x		# [1]頭
-MODEL_FILENAME = data/MODEL/player/02_armL.x		# [2]左腕
-MODEL_FILENAME = data/MODEL/player/03_armR.x		# [3]右腕
-MODEL_FILENAME = data/MODEL/player/04_legLU.x		# [4]胴体左足
-MODEL_FILENAME = data/MODEL/player/05_legLD.x		# [5]後ろ左足
-MODEL_FILENAME = data/MODEL/player/06_legRU.x		# [6]胴体右足
-MODEL_FILENAME = data/MODEL/player/07_legRD.x		# [7]後ろ右足
+MODEL_FILENAME = data/MODEL/beetle/00_body.x		# [0]体
+MODEL_FILENAME = data/MODEL/beetle/01_head.x		# [1]頭
+MODEL_FILENAME = data/MODEL/beetle/02_armL.x		# [2]左腕
+MODEL_FILENAME = data/MODEL/beetle/03_armR.x		# [3]右腕
+MODEL_FILENAME = data/MODEL/beetle/04_legLU.x		# [4]胴体左足
+MODEL_FILENAME = data/MODEL/beetle/05_legLD.x		# [5]後ろ左足
+MODEL_FILENAME = data/MODEL/beetle/06_legRU.x		# [6]胴体右足
+MODEL_FILENAME = data/MODEL/beetle/07_legRD.x		# [7]後ろ右足
 
 #------------------------------------------------------------------------------
 # キャラクター情報
@@ -100,7 +100,7 @@ MOTIONSET
 	LOOP = 1		# ループするかどうか[0:ループしない / 1:ループする]
 	NUM_KEY = 2		# キー数
 
-	KEYSET			# --- << KEY : 0 / 2 >> ---
+	KEYSET			# --- << 0 / 2 >> ---
 		FRAME = 30
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 -0.80 0.00
@@ -178,7 +178,7 @@ MOTIONSET
 		END_KEY
 	END_KEYSET
 
-	KEYSET			# --- << KEY : 1 / 2 >> ---
+	KEYSET			# --- << 1 / 2 >> ---
 		FRAME = 30
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
@@ -264,7 +264,7 @@ MOTIONSET
 	LOOP = 1		# ループするかどうか[0:ループしない / 1:ループする]
 	NUM_KEY = 2		# キー数
 
-	KEYSET			# --- << KEY : 0 / 2 >> ---
+	KEYSET			# --- << 0 / 2 >> ---
 		FRAME = 30
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 -0.80 0.00
@@ -342,7 +342,7 @@ MOTIONSET
 		END_KEY
 	END_KEYSET
 
-	KEYSET			# --- << KEY : 1 / 2 >> ---
+	KEYSET			# --- << 1 / 2 >> ---
 		FRAME = 30
 		KEY	# ----- [ 0 ] -----
 			POS = 0.00 0.00 0.00
