@@ -39,8 +39,8 @@ namespace
 {
 const char* BODY_PATH = "data\\MOTION\\motionArms01.txt";	// 見た目のパス
 const float GRAVITY = 0.50f;	// 重力
-const float SPEED_MOVE = 1.6f;	// 移動速度
-const float FACT_MOVE = 0.04f;	// 移動の減衰係数
+const float SPEED_MOVE = 2.0f;	// 移動速度
+const float FACT_MOVE = 0.1f;	// 移動の減衰係数
 const float TIME_BLOOM = 0.4f;	// 花咲時間
 }
 
@@ -224,8 +224,8 @@ void CPlayer::Update(void)
 	pos += move;
 	SetPosition(pos);
 
-	move.x += (0 - move.x) * 0.05f;
-	move.z += (0 - move.z) * 0.05f;
+	move.x += (0 - move.x) * FACT_MOVE;
+	move.z += (0 - move.z) * FACT_MOVE;
 
 	SetMove(move);
 
@@ -453,8 +453,13 @@ void CPlayer::ManageTimeSeed(void)
 			{
 				D3DXVECTOR3 pos = GetPosition();
 
+				pos.z += universal::RandRange(500, -500);
+				pos.x += universal::RandRange(500, -500);
+
 				pFlower->SetPosition(pos);
 			}
+
+			m_info.fTimerBloom = 0.0f;
 		}
 
 		// 時間の減少

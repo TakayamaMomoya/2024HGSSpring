@@ -9,13 +9,15 @@
 // インクルード
 //*****************************************************
 #include "FlowerPlayer.h"
+#include "score.h"
 
 //*****************************************************
 // 定数定義
 //*****************************************************
 namespace
 {
-
+const float SPEED_APPER = 0.1f;	// 出現速度
+const int ADD_SCORE = 10;	// スコア加算量
 }
 
 //*****************************************************
@@ -70,6 +72,15 @@ HRESULT CFlowerPlayer::Init(void)
 	// 影の有効化
 	EnableShadow(true);
 
+	SetScale(0.0f);
+
+	CScore *pScore = CScore::GetInstance();
+
+	if (pScore != nullptr)
+	{
+		pScore->AddScore(ADD_SCORE);
+	}
+
 	return S_OK;
 }
 
@@ -89,6 +100,13 @@ void CFlowerPlayer::Update(void)
 {
 	// 継承クラスの更新
 	CObjectX::Update();
+
+	// スケールの管理
+	float fScale = GetScale();
+
+	fScale += (1.0f - fScale) * SPEED_APPER;
+
+	SetScale(fScale);
 }
 
 //=====================================================
