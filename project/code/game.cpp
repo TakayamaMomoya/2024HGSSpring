@@ -39,11 +39,19 @@
 #include "net.h"
 #include "netManager.h"
 #include "timer.h"
+#include "UI.h"
 
 //*****************************************************
 // マクロ定義
 //*****************************************************
-#define TRANS_TIME	(300)	// 終了までの余韻のフレーム数
+#define TRANS_TIME	(90)	// 終了までの余韻のフレーム数
+
+namespace
+{
+const float WIDTH_RESULT = 350.0f;	// リザルト表示の幅
+const float HEIGHT_RESULT = 160.0f;	// リザルト表示の高さ
+const float SPEED_RESULT = 0.3f;	// リザルト表示のスピード
+}
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -59,6 +67,7 @@ CGame::CGame()
 	m_nAddReward = 0;
 	m_nCntState = 0;
 	m_bStop = false;
+	m_pResult = nullptr;
 }
 
 //=====================================================
@@ -186,6 +195,38 @@ void CGame::ManageState(void)
 	{
 	case CGame::STATE_NORMAL:
 		break;
+	case CGame::STATE_RESULT:
+
+		if (m_pResult == nullptr)
+		{// リザルトの表示
+			m_pResult = CUI::Create();
+
+			if (m_pResult != nullptr)
+			{
+				m_pResult->SetPosition(SCRN_MID);
+				m_pResult->SetSize(WIDTH_RESULT * 20, HEIGHT_RESULT * 20);
+				m_pResult->SetVtx();
+
+				int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\result.png");
+				m_pResult->SetIdxTexture(nIdx);
+			}
+		}
+		else
+		{
+			float fWidth = m_pResult->GetWidth();
+			float fHeight = m_pResult->GetHeight();
+
+			fWidth += (WIDTH_RESULT - fWidth) * SPEED_RESULT;
+			fHeight += (HEIGHT_RESULT - fHeight) * SPEED_RESULT;
+
+			m_pResult->SetSize(fWidth, fHeight);
+			m_pResult->SetVtx();
+
+			if ((WIDTH_RESULT - fWidth) > -1.0f)
+			{
+				CGame::SetState(STATE_END);
+			}
+		}
 
 		break;
 	case CGame::STATE_END:

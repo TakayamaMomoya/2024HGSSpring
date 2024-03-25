@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "net.h"
 #include "player.h"
+#include "game.h"
 
 //*****************************************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -88,6 +89,9 @@ void CNetManager::Uninit(void)
 //=====================================================
 void CNetManager::Update(void)
 {
+	if (CGame::GetState() != CGame::STATE_NORMAL)
+		return;
+
 	int nNumNetNear = 0;
 
 	for (CNet *pNet : m_list)

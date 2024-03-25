@@ -20,7 +20,7 @@
 // マクロ定義
 //*****************************************************
 #define NUM_PLACE	(2)	// 桁数
-#define INITIAL_TIME	(120)	// 初期の時間
+#define INITIAL_TIME	(60)	// 初期の時間
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -90,6 +90,8 @@ HRESULT CTimer::Init(void)
 //=====================================================
 void CTimer::Uninit(void)
 {
+	m_pTimer = nullptr;
+
 	if (m_pObjMinute != nullptr)
 	{
 		m_pObjMinute = nullptr;
@@ -145,7 +147,7 @@ void CTimer::Update(void)
 	{
 		m_nSecond = 0;
 
-		CGame::SetState(CGame::STATE_END);
+		CGame::SetState(CGame::STATE_RESULT);
 	}
 }
 

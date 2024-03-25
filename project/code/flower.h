@@ -31,10 +31,12 @@ public:
 	void Draw(void);
 	void Hit(float fDamage);
 	void SetPosition(D3DXVECTOR3 pos);
+	bool IsDeath(void) { return m_bDeath; }
 
 private:
 	void DeleteCollision(void);
 
+	bool m_bDeath;	// €–S”»’è
 	static int m_nNumAll;	// ‘”
 	CCollisionSphere *m_pCollisionSphere;	// ‹…‚Ì“–‚½‚è”»’è
 };

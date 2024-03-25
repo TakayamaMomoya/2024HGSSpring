@@ -314,19 +314,12 @@ bool DistCmp(D3DXVECTOR3 posOwn, D3DXVECTOR3 posTarget, float fLengthMax, float 
 	D3DXVECTOR3 vecDiff = posTarget - posOwn;
 	float fLength = D3DXVec3Length(&vecDiff);
 
-	if (fLength < fLengthMax)
+	if (fDiff != nullptr)
 	{
-		if (fDiff != nullptr)
-		{
-			*fDiff = fLength;
-		}
+		*fDiff = fLength;
+	}
 
-		return true;
-	}
-	else
-	{
-		return false;
-	}
+	return fLength < fLengthMax;
 }
 
 //========================================

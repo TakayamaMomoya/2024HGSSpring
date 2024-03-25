@@ -33,6 +33,8 @@
 #include "flowerPlayer.h"
 #include "object3D.h"
 #include "texture.h"
+#include "flowerManager.h"
+#include "flower.h"
 
 //*****************************************************
 // 定数定義
@@ -142,7 +144,7 @@ HRESULT CPlayer::Init(void)
 
 	if (m_info.pGuide == nullptr)
 	{
-		m_info.pGuide = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//m_info.pGuide = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		if (m_info.pGuide != nullptr)
 		{
@@ -261,17 +263,6 @@ void CPlayer::Update(void)
 	// 継承クラスの更新
 	CMotion::Update();
 
-	if (m_info.pGuide != nullptr)
-	{
-		D3DXVECTOR3 pos = GetPosition();
-
-		pos.y += 1.0f;
-
-		m_info.pGuide->SetPosition(pos);
-
-		
-	}
-
 // デバッグ処理
 #if _DEBUG
 	Debug();
@@ -283,6 +274,9 @@ void CPlayer::Update(void)
 //=====================================================
 void CPlayer::Input(void)
 {
+	if (CGame::GetState() != CGame::STATE_NORMAL)
+		return;
+
 	// 移動操作
 	InputMove();
 
