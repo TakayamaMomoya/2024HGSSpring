@@ -93,6 +93,7 @@ private:
 		bool bLand;	// 着地しているかどうか
 		D3DXVECTOR3 rotDest;	// 目標の向き
 		float fTimerSeed;	// 種時間
+		float fTimerBloom;	// 花咲タイマー
 	};
 
 	void Load(void);

@@ -329,9 +329,6 @@
     <ClInclude Include="code\pause.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="code\player.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="code\renderer.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -381,6 +378,9 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="code\flowerPlayer.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="code\player.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>

@@ -30,8 +30,7 @@
 #include "pause.h"
 #include "inpact.h"
 #include "sound.h"
-#include "UIManager.h"
-#include "orbit.h"
+#include "flowerPlayer.h"
 
 //*****************************************************
 // 定数定義
@@ -39,42 +38,10 @@
 namespace
 {
 const char* BODY_PATH = "data\\MOTION\\motionArms01.txt";	// 見た目のパス
-const float INITIAL_BOOST = 200.0f;	// ブースト残量の初期値
-const float REGEN_BOOST = 2.5f;	// ブースト回復量
 const float GRAVITY = 0.50f;	// 重力
-const float SPEED_ROLL_CAMERA = 0.03f;	// カメラ回転速度
-const float SPEED_BULLET = 200.0f;	// 弾速
-const float POW_JUMP = 20.0f;	// ジャンプ力
-const float POW_STAMP = 30.0f;	// 踏みつけの推進力
-const float SPEED_STAMP = 70.0f;	// 踏みつけ水平推進力
 const float SPEED_MOVE = 1.6f;	// 移動速度
 const float FACT_MOVE = 0.04f;	// 移動の減衰係数
-const float SPEED_ASSAULT = 7.0f;	// 突進の移動速度
-const float POW_ADDMELEE = 70.0f;	// 追撃の推進力
-const float SPEED_DODGE = 100.0f;	// 回避推進力
-const float POW_GRAB = 50.0f;	// 掴みの推進力
-const float RADIUS_GRAB = 500.0f;	// 掴みの判定
-const float POW_THROW = 200.0f;	// 投げの力
-const float LENGTH_LOCKON = 5000.0f;	// ロックオンの長さ
-const float ANGLE_LOCKON = D3DX_PI * 0.2f;	// ロックオンの角度
-const float MELEE_DIST = 500.0f;	// 格闘に移る距離
-const float MIN_ANGLE_CAMERA = D3DX_PI * 0.1f;	// カメラの下を見る制限
-const float MAX_ANGLE_CAMERA = D3DX_PI * 0.9f;	// カメラの上を見る制限
-const float DAMAGE_BULLET = 1.0f;	// 弾の威力
-const float DECREASE_PARAM = 2.0f;	// パラメータ全回復にかかる時間
-const D3DXVECTOR3 POS_PARAM[CPlayer::PARAM_MAX] =
-{// パラメータ表示の位置
-	{SCREEN_WIDTH * 0.5f - 370.0f,SCREEN_HEIGHT * 0.5f - 100.0f,0.0f},// 銃
-	{SCREEN_WIDTH * 0.5f + 370.0f,SCREEN_HEIGHT * 0.5f - 100.0f,0.0f},// 近接
-	{SCREEN_WIDTH * 0.5f + 370.0f,SCREEN_HEIGHT * 0.5f + 100.0f,0.0f},// 掴み
-};
-const char* PATH_PARAM[CPlayer::PARAM_MAX] =
-{// パラメータUIのテクスチャパス
-	"data\\TEXTURE\\UI\\frame00.png",
-	"data\\TEXTURE\\UI\\frame01.png",
-	"data\\TEXTURE\\UI\\frame02.png",
-};
-const int RAND_SHOT = 60;	// 射撃精度のランダム幅
+const float TIME_BLOOM = 0.4f;	// 花咲時間
 }
 
 //*****************************************************
@@ -175,7 +142,6 @@ HRESULT CPlayer::Init(void)
 	m_param.fInitialLife = 300.0f;
 	m_info.fLife = m_param.fInitialLife;
 	m_param.fSpeedMove = SPEED_MOVE;
-	m_param.fInitialBoost = INITIAL_BOOST;
 	m_info.state = STATE_NORMAL;
 	m_info.bLand = true;
 
@@ -447,19 +413,6 @@ void CPlayer::InputCamera(void)
 	}
 
 	CCamera::Camera *pInfoCamera = pCamera->GetCamera();
-	
-	// 方向入力の取得
-	CInputManager::SAxis axis = pInputManager->GetAxis();
-	D3DXVECTOR3 axisCamera = axis.axisCamera;
-
-	// カメラの回転
-	pInfoCamera->rot.x += axisCamera.y * SPEED_ROLL_CAMERA;
-	pInfoCamera->rot.y += axisCamera.x * SPEED_ROLL_CAMERA;
-
-	universal::LimitValue(&pInfoCamera->rot.x, MAX_ANGLE_CAMERA, MIN_ANGLE_CAMERA);
-
-	universal::LimitRot(&pInfoCamera->rot.x);
-	universal::LimitRot(&pInfoCamera->rot.y);
 }
 
 //=====================================================
@@ -487,12 +440,24 @@ void CPlayer::ManageTimeSeed(void)
 	}
 	else
 	{// 種残ってる場合
-		// 花を咲かせる
-
-
-		// 時間の減少
 		float fDeltaTime = CManager::GetDeltaTime();
 
+		// 花を咲かせる
+		m_info.fTimerBloom += fDeltaTime;
+
+		if (m_info.fTimerBloom >= TIME_BLOOM)
+		{
+			CFlowerPlayer *pFlower = CFlowerPlayer::Create();
+
+			if (pFlower != nullptr)
+			{
+				D3DXVECTOR3 pos = GetPosition();
+
+				pFlower->SetPosition(pos);
+			}
+		}
+
+		// 時間の減少
 		m_info.fTimerSeed -= fDeltaTime;
 
 		if (m_info.fTimerSeed <= 0.0f)
