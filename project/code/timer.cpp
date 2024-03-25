@@ -90,6 +90,8 @@ HRESULT CTimer::Init(void)
 //=====================================================
 void CTimer::Uninit(void)
 {
+	m_pTimer = nullptr;
+
 	if (m_pObjMinute != nullptr)
 	{
 		m_pObjMinute = nullptr;
