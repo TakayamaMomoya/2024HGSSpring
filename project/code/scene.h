@@ -30,6 +30,7 @@ public:
 		MODE_TUTORIAL,
 		MODE_GAME,
 		MODE_RESULT,
+		MODE_RANKING,
 		MODE_MAX
 	};
 
