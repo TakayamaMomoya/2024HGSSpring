@@ -13,6 +13,7 @@
 #include "player.h"
 #include "object3D.h"
 #include "texture.h"
+#include "manager.h"
 
 //*****************************************************
 // 定数定義
@@ -21,7 +22,8 @@ namespace
 {
 const float RADIUS_COLLISION = 200.0f;	// 当たり判定の半径
 const float INITIAL_HEIGHT = 1000.0f;	// 高さの設定
-const float SPEED_FALL = 20.0f;	// 網が落ちる速度
+const float SPEED_FALL = 60.0f;	// 網が落ちる速度
+const float TIME_FALL = 2.0f;	// 落ちてくるまでの時間
 }
 
 //*****************************************************
@@ -36,6 +38,7 @@ CNet::CNet(int nPriority)
 {
 	m_pCollisionSphere = nullptr;
 	m_pShadow = nullptr;
+	m_fTimerFall = 0.0f;
 
 	m_nNumAll++;
 }
@@ -152,34 +155,43 @@ void CNet::Update(void)
 	// 継承クラスの更新
 	CObjectX::Update();
 
-	D3DXVECTOR3 pos = GetPosition();
-
-	if (pos.y >= 0.0f)
+	if (m_fTimerFall >= TIME_FALL)
 	{
-		pos.y -= SPEED_FALL;
+		D3DXVECTOR3 pos = GetPosition();
 
-		if (pos.y <= 0.0f)
+		if (pos.y >= 0.0f)
 		{
-			pos.y = 0.0f;
+			pos.y -= SPEED_FALL;
 
-			CPlayer *pPlayer = CPlayer::GetInstance();
-
-			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
-
-			if (universal::DistCmp(posPlayer, posPlayer, RADIUS_COLLISION, nullptr))
+			if (pos.y <= 0.0f)
 			{
-				pPlayer->Hit(1.0f);
+				pos.y = 0.0f;
+
+				CPlayer *pPlayer = CPlayer::GetInstance();
+
+				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
+
+				if (universal::DistCmp(posPlayer, posPlayer, RADIUS_COLLISION, nullptr))
+				{
+					pPlayer->Hit(1.0f);
+				}
 			}
+
+			SetPosition(pos);
 		}
-
-		SetPosition(pos);
 	}
-
-	if (m_pShadow != nullptr)
+	else
 	{
-		float fRate = 1.0f - (pos.y / INITIAL_HEIGHT);
+		float fDeltaTime = CManager::GetDeltaTime();
 
-		m_pShadow->SetSize(RADIUS_COLLISION * fRate * 1.5f, RADIUS_COLLISION * fRate * 1.5f);
+		m_fTimerFall += fDeltaTime;
+
+		if (m_pShadow != nullptr)
+		{// 影の調整
+			float fRate = (m_fTimerFall / TIME_FALL);
+
+			m_pShadow->SetSize(RADIUS_COLLISION * fRate * 1.5f, RADIUS_COLLISION * fRate * 1.5f);
+		}
 	}
 }
 

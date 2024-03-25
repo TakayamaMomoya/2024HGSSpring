@@ -36,6 +36,7 @@ private:
 	void DeleteCollision(void);
 
 	static int m_nNumAll;	// 総数
+	float m_fTimerFall;	// 落ちるまでのタイマー
 	CCollisionSphere *m_pCollisionSphere;	// 球の当たり判定
 	CObject3D *m_pShadow;	// 影のポインタ
 };
