@@ -82,6 +82,19 @@ HRESULT CRanking::Init(void)
 
 	int nDigit;		//桁数
 
+		// サウンドインスタンスの取得
+	CSound* pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		// BGMの再生
+		pSound->Play(pSound->LABEL_BGM_RANKING);
+	}
+	else if (pSound == nullptr)
+	{
+		return E_FAIL;
+	}
+
 	// 見出しの生成
 	CObject2D* pCaption = nullptr;
 
