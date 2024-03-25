@@ -569,8 +569,20 @@ void CPlayer::ManageCollision(void)
 		D3DXVECTOR3 posWaist = GetMtxPos(0);
 		D3DXVECTOR3 move = GetMove();
 
-		// 敵との接触判定
-		m_info.pCollisionSphere->SetPosition(posWaist + move);
+		m_info.pCollisionSphere->SetPositionOld(m_info.pCollisionSphere->GetPosition());
+		m_info.pCollisionSphere->SetPosition(pos);
+
+		if (m_info.pCollisionSphere->IsTriggerEnter(CCollision::TAG_FLOWER))
+		{// 花との判定
+			CObject *pObj = nullptr;
+
+			pObj = m_info.pCollisionSphere->GetOther();
+
+			if (pObj != nullptr)
+			{
+				pObj->Hit(1.0f);
+			}
+		}
 
 		if (m_info.pCollisionCube != nullptr)
 		{
@@ -580,9 +592,6 @@ void CPlayer::ManageCollision(void)
 			// 判定の追従
 			m_info.pCollisionCube->SetPositionOld(posCollision);
 			m_info.pCollisionCube->SetPosition(pos);
-
-			// ブロックとの押し出し判定
-			bLandBlock = m_info.pCollisionCube->CubeCollision(CCollision::TAG_BLOCK, &move);
 
 			// メッシュフィールドとの当たり判定
 			pos = GetPosition();
@@ -600,27 +609,13 @@ void CPlayer::ManageCollision(void)
 					move.y = 0.0f;
 
 					SetPosition(pos);
-
-					bool bFinish = IsFinish();
-
-					bLandMesh = true;
 				}
 			}
 
 			SetMove(move);
 		}
 
-		m_info.pCollisionSphere->PushCollision(&pos, CCollision::TAG::TAG_FLOWER);
-
-		if (pos.y > 4000.0f)
-		{
-			pos.y = 4000.0f;
-		}
-
 		SetPosition(pos);
-
-		m_info.bLand = bLandMesh || bLandBlock;
-		m_fragMotion.bAir = !m_info.bLand;
 	}
 }
 
