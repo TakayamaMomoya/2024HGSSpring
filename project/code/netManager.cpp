@@ -103,10 +103,7 @@ void CNetManager::Update(void)
 			D3DXVECTOR3 posPlayer = { 0.0f,0.0f,0.0f };
 			D3DXVECTOR3 pos = pNet->GetPosition();
 
-			if (pPlayer != nullptr)
-			{
-				posPlayer = pPlayer->GetPosition();
-			}
+			
 
 			if (universal::DistCmp(posPlayer, pos, DIST_NEAR, nullptr))
 			{
@@ -123,13 +120,17 @@ void CNetManager::Update(void)
 	{// –Ô‚Ì¶¬
 		// ˆÊ’u‚ÌÝ’è
 		D3DXVECTOR3 pos = { 0.0f,0.0f,0.0f };
+		D3DXVECTOR3 move = { 0.0f,0.0f,0.0f };
 
 		CPlayer *pPlayer = CPlayer::GetInstance();
 
 		if (pPlayer != nullptr)
 		{
+			move = pPlayer->GetMove();
 			pos = pPlayer->GetPosition();
 		}
+
+		pos += move * 80.0f;
 
 		pos.z += universal::RandRange(RAND_NET, -RAND_NET);
 		pos.x += universal::RandRange(RAND_NET, -RAND_NET);

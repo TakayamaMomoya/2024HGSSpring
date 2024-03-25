@@ -20,7 +20,7 @@
 //*****************************************************
 namespace
 {
-const float RADIUS_COLLISION = 200.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float RADIUS_COLLISION = 600.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
 const float INITIAL_HEIGHT = 1500.0f;	// ‚‚³‚ÌÝ’è
 const float SPEED_FALL = 90.0f;	// –Ô‚ª—Ž‚¿‚é‘¬“x
 const float TIME_FALL = 2.0f;	// —Ž‚¿‚Ä‚­‚é‚Ü‚Å‚ÌŽžŠÔ
@@ -171,7 +171,7 @@ void CNet::Update(void)
 
 				D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
 
-				if (universal::DistCmp(posPlayer, posPlayer, RADIUS_COLLISION, nullptr))
+				if (universal::DistCmp(pos, posPlayer, RADIUS_COLLISION, nullptr))
 				{
 					pPlayer->Hit(1.0f);
 				}
@@ -205,7 +205,7 @@ void CNet::Update(void)
 		{// ‰e‚Ì’²®
 			float fRate = (m_fTimerFall / TIME_FALL);
 
-			m_pShadow->SetSize(RADIUS_COLLISION * fRate * 1.5f, RADIUS_COLLISION * fRate * 1.5f);
+			m_pShadow->SetSize(RADIUS_COLLISION * fRate, RADIUS_COLLISION * fRate);
 		}
 	}
 }

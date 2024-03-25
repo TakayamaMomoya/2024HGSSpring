@@ -10,13 +10,16 @@
 //*****************************************************
 #include "score.h"
 #include "debugproc.h"
+#include "number.h"
+#include "UI.h"
+#include "texture.h"
 
 //*****************************************************
 // 定数定義
 //*****************************************************
 namespace
 {
-
+const int NUM_PLACE = 4;	// 桁数
 }
 
 //*****************************************************
@@ -30,6 +33,8 @@ CScore *CScore::m_pScore = nullptr;	// 自身のポインタ
 CScore::CScore(int nPriority) : CObject(nPriority)
 {
 	m_nScore = 0;
+	m_nScoreDest = 0;
+	m_pObjNumber = nullptr;
 }
 
 //=====================================================
@@ -63,6 +68,26 @@ CScore *CScore::Create(void)
 //=====================================================
 HRESULT CScore::Init(void)
 {
+	if (m_pObjNumber == nullptr)
+	{
+		m_pObjNumber = CNumber::Create(NUM_PLACE, m_nScore);
+
+		m_pObjNumber->SetPosition(D3DXVECTOR3(900.0f, 70.0f, 0.0f));
+		m_pObjNumber->SetSizeAll(20.0f, 40.0f);
+	}
+
+	CUI *pUI = CUI::Create();
+
+	if (pUI != nullptr)
+	{
+		pUI->SetPosition(D3DXVECTOR3(1100.0f, 70.0f, 0.0f));
+		pUI->SetSize(60.0f, 40.0f);
+		pUI->SetVtx();
+
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\SquareCentimeter.png");
+		pUI->SetIdxTexture(nIdx);
+	}
+
 	return S_OK;
 }
 
@@ -79,7 +104,22 @@ void CScore::Uninit(void)
 //=====================================================
 void CScore::Update(void)
 {
+	int nScoreOld = m_nScore;
 
+	//スコア値上昇演出==============================
+	if (m_nScore >= m_nScoreDest)
+	{
+		m_nScore = m_nScoreDest;
+	}
+	else
+	{
+		m_nScore += 2;
+	}
+
+	if (m_pObjNumber != nullptr)
+	{
+		m_pObjNumber->SetValue(m_nScore, NUM_PLACE);
+	}
 }
 
 //=====================================================
@@ -87,7 +127,7 @@ void CScore::Update(void)
 //=====================================================
 void CScore::AddScore(int nValue)
 {
-	m_nScore += nValue;
+	m_nScoreDest += nValue;
 }
 
 //=====================================================
@@ -100,5 +140,6 @@ void CScore::Draw(void)
 	if (pDebug != nullptr)
 	{
 		pDebug->Print("\nスコア[%d]", m_nScore);
+		pDebug->Print("\nスコア目標値[%d]", m_nScoreDest);
 	}
 }

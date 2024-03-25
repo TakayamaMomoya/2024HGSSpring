@@ -45,7 +45,8 @@ const char* BODY_PATH = "data\\MOTION\\motionBeetle.txt";	// 見た目のパス
 const float GRAVITY = 0.50f;	// 重力
 const float SPEED_MOVE = 2.0f;	// 移動速度
 const float FACT_MOVE = 0.1f;	// 移動の減衰係数
-const float TIME_BLOOM = 0.4f;	// 花咲時間
+const float TIME_BLOOM = 0.6f;	// 花咲時間
+const float TIME_ESCAPE = 2.0f;	// つかまり時間
 }
 
 //*****************************************************
@@ -172,6 +173,8 @@ HRESULT CPlayer::Init(void)
 	EnableShadow(true);
 	SetPosShadow(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 
+	m_info.fLimitBloom = TIME_BLOOM;
+
 	return S_OK;
 }
 
@@ -274,7 +277,9 @@ void CPlayer::Update(void)
 //=====================================================
 void CPlayer::Input(void)
 {
-	if (CGame::GetState() != CGame::STATE_NORMAL)
+	int nMotion = GetMotion();
+
+	if (CGame::GetState() != CGame::STATE_NORMAL || nMotion == MOTION_CATCH)
 		return;
 
 	// 移動操作
@@ -343,11 +348,6 @@ void CPlayer::InputMove(void)
 	D3DXVECTOR3 vecMove = { 0.0f,0.0f,0.0f };
 	D3DXVECTOR3 rot = GetRotation();
 
-	if (m_fragMotion.bMove && fLengthAxis <= 0.3f)
-	{// 急停止フラグ
-		m_fragMotion.bStop = true;
-	}
-
 	fLengthAxis *= SPEED_MOVE;
 
 	vecMove -= {sinf(rot.y) * fLengthAxis, 0.0f, cosf(rot.y) * fLengthAxis};
@@ -363,17 +363,6 @@ void CPlayer::InputMove(void)
 		float fScale = pSlow->GetScale();
 
 		vecMove *= fScale;
-	}
-
-	if (m_info.bLand)
-	{
-		if (pInputManager->GetTrigger(CInputManager::BUTTON_JUMP))
-		{// ジャンプ操作
-			m_fragMotion.bJump = true;
-			m_fragMotion.bMove = false;
-
-			Sound::Play(CSound::LABEL_SE_BOOST00);
-		};
 	}
 
 	float fAngleInput = atan2f(axisMove.x, axisMove.z);
@@ -467,7 +456,7 @@ void CPlayer::ManageTimeSeed(void)
 		// 花を咲かせる
 		m_info.fTimerBloom += fDeltaTime;
 
-		if (m_info.fTimerBloom >= TIME_BLOOM)
+		if (m_info.fTimerBloom >= m_info.fLimitBloom)
 		{
 			CFlowerPlayer *pFlower = CFlowerPlayer::Create();
 
@@ -591,6 +580,8 @@ void CPlayer::ManageCollision(void)
 			{
 				pObj->Hit(1.0f);
 			}
+
+			AddLimitBloom(-0.05f);
 		}
 
 		if (m_info.pCollisionCube != nullptr)
@@ -636,7 +627,23 @@ void CPlayer::ManageMotion(void)
 	int nMotion = GetMotion();
 	bool bFinish = IsFinish();
 
-	if (m_fragMotion.bMove)
+	if (m_fragMotion.bCatch)
+	{
+		if (nMotion != MOTION_CATCH)
+		{
+			SetMotion(MOTION_CATCH);
+		}
+
+		m_info.fTimerCatch += CManager::GetDeltaTime();
+
+		if (TIME_ESCAPE < m_info.fTimerCatch)
+		{
+			m_info.fTimerCatch = 0.0f;
+
+			m_fragMotion.bCatch = false;
+		}
+	}
+	else if (m_fragMotion.bMove)
 	{// 歩きモーション
 		if (nMotion != MOTION_WALK_FRONT)
 		{
@@ -722,7 +729,7 @@ void CPlayer::Draw(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
-	int n = 0;
+	m_fragMotion.bCatch = true;
 }
 
 //=====================================================
@@ -786,7 +793,6 @@ void CPlayer::Debug(void)
 	int nMotion = GetMotion();
 
 	pDebugProc->Print("\n着地[%d]", m_info.bLand);
-	pDebugProc->Print("\n空中[%d]", m_fragMotion.bAir);
 
 	CInputKeyboard *pKey = CInputKeyboard::GetInstance();
 
