@@ -20,7 +20,7 @@
 //*****************************************************
 namespace
 {
-const int NUM_PLACE = 4;	// Œ…”
+const int NUM_PLACE = 5;	// Œ…”
 }
 
 //*****************************************************
@@ -81,7 +81,7 @@ HRESULT CScore::Init(void)
 
 	if (pUI != nullptr)
 	{
-		pUI->SetPosition(D3DXVECTOR3(1100.0f, 70.0f, 0.0f));
+		pUI->SetPosition(D3DXVECTOR3(1150.0f, 70.0f, 0.0f));
 		pUI->SetSize(60.0f, 40.0f);
 		pUI->SetVtx();
 

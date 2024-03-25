@@ -24,12 +24,12 @@
 //*****************************************************
 // マクロ定義
 //*****************************************************
-#define MESHFIELD_TEX_FILE			"data\\TEXTURE\\MATERIAL\\field01.jpg"				// テクスチャファイル名
+#define MESHFIELD_TEX_FILE			"data\\TEXTURE\\MATERIAL\\field02.jpg"				// テクスチャファイル名
 #define MOVE_SPEED					(1.0f)										// 移動速度
 #define MESH_LENGTH					(10000.0f)									// メッシュの一辺の長さ
 #define MESH_U						(254)											// 横のブロック数
 #define MESH_V						(254)											// 縦のブロック数
-#define SPLIT_TEX					(50)										// テクスチャ分割数
+#define SPLIT_TEX					(160)										// テクスチャ分割数
 #define CHENGE_LENGTH	(10000)	// 操作できる頂点までの距離
 #define ANGLE_SLIP	(0.7f)	// 坂を滑る角度
 #define CMP_LENGTH	(1000.0f)	// 判定する半径
@@ -89,7 +89,6 @@ HRESULT CMeshField::Init(void)
 	LPDIRECT3DDEVICE9 pDevice = CRenderer::GetInstance()->GetDevice();
 
 	// 値の初期設定
-	m_fLengthMesh = MESH_LENGTH;
 	m_nDivNumU = MESH_U;
 	m_nDivNumV = MESH_V;
 	m_col = { 1.0f,1.0f,1.0f,1.0f };
@@ -98,6 +97,8 @@ HRESULT CMeshField::Init(void)
 	Load("data\\MAP\\field00.bin");
 
 	Reset();
+
+	m_fLengthMesh = MESH_LENGTH;
 
 	m_nDivTex = SPLIT_TEX;
 
