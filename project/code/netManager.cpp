@@ -11,7 +11,7 @@
 #include "netManager.h"
 #include "debugproc.h"
 #include "manager.h"
-#include "Net.h"
+#include "net.h"
 #include "player.h"
 
 //*****************************************************
