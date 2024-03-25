@@ -15,6 +15,7 @@
 #include "texture.h"
 #include "manager.h"
 #include "particle.h"
+#include "sound.h"
 
 //*****************************************************
 // 定数定義
@@ -178,6 +179,14 @@ void CNet::Update(void)
 
 					// ここでパーティクル
 					CParticle::Create(posPlayer, CParticle::TYPE::TYPE_TURN_EXPLOSION);
+
+					CSound* pSound = CSound::GetInstance();
+
+					if (pSound != nullptr)
+					{
+						pSound->Play(pSound->LABEL_SE_INSECTNET);
+					}
+
 				}
 
 				SetEmissiveCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
