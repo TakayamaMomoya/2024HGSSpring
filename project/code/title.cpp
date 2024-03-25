@@ -41,7 +41,7 @@ namespace
 	const D3DXVECTOR3 STATE_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.7f, 0.0f);	// スタート表示の位置
 	const float START_WIDTH = 400.0f;	// スタート表示の幅
 	const float START_HEIGHT = 100.0f;	// スタート表示の高さ
-	const char* START_PATH = "data\\TEXTURE\\UI\\gamestart.png";	// スタート表示のパス
+	const char* START_PATH = "data\\TEXTURE\\UI\\start.png";	// スタート表示のパス
 	const float SPEED_AFTER_EXPAND = 2.0f;	// 残像の膨らむ速度
 	const float SPEED_START_AVOID = 0.03f;	// スタート表示の消える速度
 	D3DXVECTOR2 SIZE_MENU = { 200.0f,60.0f };	//　メニューのサイズ
