@@ -60,6 +60,21 @@ CTutorial::~CTutorial()
 //=====================================================
 HRESULT CTutorial::Init(void)
 {
+	// 見出しの生成
+	CObject2D* pCaption = nullptr;
+
+	pCaption = CObject2D::Create(0);
+
+	if (pCaption != nullptr)
+	{
+		pCaption->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+		pCaption->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
+		pCaption->SetVtx();
+
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\tutorial.jpg");
+		pCaption->SetIdxTexture(nIdx);
+	}
+
 	return S_OK;
 }
 
@@ -77,7 +92,22 @@ void CTutorial::Uninit(void)
 //=====================================================
 void CTutorial::Update(void)
 {
+	CInputManager* pInputManager = CInputManager::GetInstance();
+	CFade* pFade = CFade::GetInstance();
 
+	if (pInputManager == nullptr)
+	{
+		return;
+	}
+
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER))
+	{//ENTERキー押したら
+
+		CScene::SetScore(NULL);
+
+		//タイトル画面
+		pFade->SetFade(CScene::MODE_TITLE);
+	}
 }
 
 //=====================================================

@@ -675,7 +675,11 @@ void CPlayer::ManageMotion(void)
 		}
 	}
 	else if (m_fragMotion.bMove)
-	{// 歩きモーション
+	{// 歩きモーション4,6
+		// ここでパーティクル
+		CParticle::Create(GetMtxPos(4), CParticle::TYPE::TYPE_SAND_SMOKE);
+		CParticle::Create(GetMtxPos(6), CParticle::TYPE::TYPE_SAND_SMOKE);
+
 		if (nMotion != MOTION_WALK_FRONT)
 		{
 			SetMotion(MOTION_WALK_FRONT);
