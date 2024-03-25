@@ -118,7 +118,12 @@ void CScore::Update(void)
 	}
 	else
 	{
-		m_nScore += 2;
+		m_nScore += 100;
+
+		if (m_nScore >= m_nScoreDest)
+		{
+			m_nScore = m_nScoreDest;
+		}
 	}
 
 	if (m_pObjNumber != nullptr)
