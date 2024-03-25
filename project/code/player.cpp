@@ -31,6 +31,8 @@
 #include "inpact.h"
 #include "sound.h"
 #include "flowerPlayer.h"
+#include "object3D.h"
+#include "texture.h"
 
 //*****************************************************
 // 定数定義
@@ -138,6 +140,18 @@ HRESULT CPlayer::Init(void)
 		}
 	}
 
+	if (m_info.pGuide == nullptr)
+	{
+		m_info.pGuide = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+		if (m_info.pGuide != nullptr)
+		{
+			m_info.pGuide->SetSize(500.0f, 500.0f);
+			int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\arrow.png");
+			m_info.pGuide->SetIdxTexture(nIdx);
+		}
+	}
+
 	// パラメーターに初期値を入れる
 	m_param.fInitialLife = 300.0f;
 	m_info.fLife = m_param.fInitialLife;
@@ -152,6 +166,9 @@ HRESULT CPlayer::Init(void)
 
 	// 読込
 	Load();
+
+	EnableShadow(true);
+	SetPosShadow(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 
 	return S_OK;
 }
@@ -243,6 +260,17 @@ void CPlayer::Update(void)
 
 	// 継承クラスの更新
 	CMotion::Update();
+
+	if (m_info.pGuide != nullptr)
+	{
+		D3DXVECTOR3 pos = GetPosition();
+
+		pos.y += 1.0f;
+
+		m_info.pGuide->SetPosition(pos);
+
+		
+	}
 
 // デバッグ処理
 #if _DEBUG

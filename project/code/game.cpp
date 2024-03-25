@@ -38,6 +38,7 @@
 #include "flowerManager.h"
 #include "net.h"
 #include "netManager.h"
+#include "timer.h"
 
 //*****************************************************
 // マクロ定義
@@ -98,26 +99,11 @@ HRESULT CGame::Init(void)
 	// メッシュフィールド生成
 	CMeshField::Create();
 
-	D3DXVECTOR3 aPos[4] =
-	{
-		{0.0f,0.0f,15000.0f},
-		{22000.0f,0.0f,0.0f},
-		{0.0f,0.0f,-15000.0f},
-		{-7000.0f,0.0f,0.0f},
-	};
-	D3DXVECTOR3 aRot[4] =
-	{
-		{0.0f,0.0f,0.0f},
-		{0.0f,D3DX_PI * 0.5f,0.0f},
-		{0.0f,D3DX_PI,0.0f},
-		{0.0f,-D3DX_PI * 0.5f,0.0f},
-	};
-
 	CScore::Create();
 
 	CFlowerManager::Create();
 
-	//CNet::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CTimer::Create();
 
 	CNetManager::Create();
 

@@ -21,8 +21,8 @@
 namespace
 {
 const float RADIUS_COLLISION = 200.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
-const float INITIAL_HEIGHT = 1000.0f;	// ‚‚³‚ÌÝ’è
-const float SPEED_FALL = 60.0f;	// –Ô‚ª—Ž‚¿‚é‘¬“x
+const float INITIAL_HEIGHT = 1500.0f;	// ‚‚³‚ÌÝ’è
+const float SPEED_FALL = 90.0f;	// –Ô‚ª—Ž‚¿‚é‘¬“x
 const float TIME_FALL = 2.0f;	// —Ž‚¿‚Ä‚­‚é‚Ü‚Å‚ÌŽžŠÔ
 }
 
@@ -159,8 +159,8 @@ void CNet::Update(void)
 	{
 		D3DXVECTOR3 pos = GetPosition();
 
-		if (pos.y >= 0.0f)
-		{
+		if (pos.y > 0.0f)
+		{// —Ž‚¿‚Ä‚¢‚éŽž
 			pos.y -= SPEED_FALL;
 
 			if (pos.y <= 0.0f)
@@ -175,9 +175,24 @@ void CNet::Update(void)
 				{
 					pPlayer->Hit(1.0f);
 				}
+
+				SetEmissiveCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			}
 
 			SetPosition(pos);
+		}
+		else
+		{// —Ž‚¿‚«‚Á‚Ä‚¢‚é‚Æ‚«
+			D3DXCOLOR col = GetEmissiveCol();
+
+			col.a -= 0.1f;
+
+			if (col.a <= 0.0f)
+			{
+				Uninit();
+			}
+
+			SetEmissiveCol(col);
 		}
 	}
 	else
