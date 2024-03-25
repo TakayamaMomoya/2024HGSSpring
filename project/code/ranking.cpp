@@ -105,7 +105,7 @@ HRESULT CRanking::Init(void)
 		pCaption->SetSize(200.0f, 60.0f);
 		pCaption->SetVtx();
 
-		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\menu01.png");
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\ranking001.png");
 		pCaption->SetIdxTexture(nIdx);
 	}
 
@@ -117,11 +117,11 @@ HRESULT CRanking::Init(void)
 
 	if(pBg != nullptr)
 	{
-		pBg->SetSize(SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT * 2.0f);
+		pBg->SetSize(SCREEN_WIDTH * 10.0f, SCREEN_HEIGHT * 6.0f);
 		pBg->SetPosition(D3DXVECTOR3(700.0f, 400.0f, -400.0f));
 		pBg->SetBgRotation(D3DXVECTOR3(0.5f * D3DX_PI, 0.0f, 0.0f));
 
-		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\ranking.jpg");
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\ranking000.jpg");
 		pBg->SetIdxTexture(nIdx);
 	}
 
