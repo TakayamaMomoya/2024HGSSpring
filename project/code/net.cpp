@@ -20,7 +20,8 @@
 namespace
 {
 const float RADIUS_COLLISION = 200.0f;	// 当たり判定の半径
-const float INITIAL_HEIGHT = 300.0f;	// 高さの設定
+const float INITIAL_HEIGHT = 1000.0f;	// 高さの設定
+const float SPEED_FALL = 20.0f;	// 網が落ちる速度
 }
 
 //*****************************************************
@@ -150,6 +151,36 @@ void CNet::Update(void)
 {
 	// 継承クラスの更新
 	CObjectX::Update();
+
+	D3DXVECTOR3 pos = GetPosition();
+
+	if (pos.y >= 0.0f)
+	{
+		pos.y -= SPEED_FALL;
+
+		if (pos.y <= 0.0f)
+		{
+			pos.y = 0.0f;
+
+			CPlayer *pPlayer = CPlayer::GetInstance();
+
+			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
+
+			if (universal::DistCmp(posPlayer, posPlayer, RADIUS_COLLISION, nullptr))
+			{
+				pPlayer->Hit(1.0f);
+			}
+		}
+
+		SetPosition(pos);
+	}
+
+	if (m_pShadow != nullptr)
+	{
+		float fRate = 1.0f - (pos.y / INITIAL_HEIGHT);
+
+		m_pShadow->SetSize(RADIUS_COLLISION * fRate * 1.5f, RADIUS_COLLISION * fRate * 1.5f);
+	}
 }
 
 //=====================================================

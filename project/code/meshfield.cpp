@@ -97,7 +97,7 @@ HRESULT CMeshField::Init(void)
 	// “Çˆ—
 	Load("data\\MAP\\field00.bin");
 
-	//Reset();
+	Reset();
 
 	m_nDivTex = SPLIT_TEX;
 
