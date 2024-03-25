@@ -19,7 +19,9 @@
 //*****************************************************
 namespace
 {
-const float RADIUS_COLLISION = 100.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float RADIUS_COLLISION = 200.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float INITIAL_HEIGHT = 1000.0f;	// ‚‚³‚ÌÝ’è
+const float SPEED_FALL = 20.0f;	// –Ô‚ª—Ž‚¿‚é‘¬“x
 }
 
 //*****************************************************
@@ -61,6 +63,8 @@ CNet *CNet::Create(D3DXVECTOR3 pos)
 		{
 			pNet->Init();
 
+			pos.y += INITIAL_HEIGHT;
+
 			pNet->SetPosition(pos);
 		}
 	}
@@ -88,7 +92,7 @@ HRESULT CNet::Init(void)
 	}
 
 	// ƒ‚ƒfƒ‹“Çž
-	int nIdx = CModel::Load("data\\MODEL\\Net\\BigNet.x");
+	int nIdx = CModel::Load("data\\MODEL\\enemy\\InsectNet.x");
 	BindModel(nIdx);
 
 	// ‰e¶¬
@@ -102,6 +106,7 @@ HRESULT CNet::Init(void)
 			m_pShadow->SetIdxTexture(nIdxTex);
 
 			m_pShadow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pShadow->SetSize(0.0f, 0.0f);
 		}
 	}
 
@@ -146,6 +151,36 @@ void CNet::Update(void)
 {
 	// Œp³ƒNƒ‰ƒX‚ÌXV
 	CObjectX::Update();
+
+	D3DXVECTOR3 pos = GetPosition();
+
+	if (pos.y >= 0.0f)
+	{
+		pos.y -= SPEED_FALL;
+
+		if (pos.y <= 0.0f)
+		{
+			pos.y = 0.0f;
+
+			CPlayer *pPlayer = CPlayer::GetInstance();
+
+			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
+
+			if (universal::DistCmp(posPlayer, posPlayer, RADIUS_COLLISION, nullptr))
+			{
+				pPlayer->Hit(1.0f);
+			}
+		}
+
+		SetPosition(pos);
+	}
+
+	if (m_pShadow != nullptr)
+	{
+		float fRate = 1.0f - (pos.y / INITIAL_HEIGHT);
+
+		m_pShadow->SetSize(RADIUS_COLLISION * fRate * 1.5f, RADIUS_COLLISION * fRate * 1.5f);
+	}
 }
 
 //=====================================================

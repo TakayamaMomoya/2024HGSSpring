@@ -37,7 +37,7 @@
 //*****************************************************
 namespace
 {
-const char* BODY_PATH = "data\\MOTION\\motionArms01.txt";	// 見た目のパス
+const char* BODY_PATH = "data\\MOTION\\motionBeetle.txt";	// 見た目のパス
 const float GRAVITY = 0.50f;	// 重力
 const float SPEED_MOVE = 2.0f;	// 移動速度
 const float FACT_MOVE = 0.1f;	// 移動の減衰係数
@@ -700,7 +700,7 @@ void CPlayer::Draw(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
-
+	int n = 0;
 }
 
 //=====================================================

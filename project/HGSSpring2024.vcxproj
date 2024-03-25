@@ -189,6 +189,7 @@
     <ClCompile Include="code\model.cpp" />
     <ClCompile Include="code\motion.cpp" />
     <ClCompile Include="code\net.cpp" />
+    <ClCompile Include="code\netManager.cpp" />
     <ClCompile Include="code\number.cpp" />
     <ClCompile Include="code\number3D.cpp" />
     <ClCompile Include="code\object.cpp" />
@@ -254,6 +255,7 @@
     <ClInclude Include="code\model.h" />
     <ClInclude Include="code\motion.h" />
     <ClInclude Include="code\net.h" />
+    <ClInclude Include="code\netManager.h" />
     <ClInclude Include="code\number.h" />
     <ClInclude Include="code\number3D.h" />
     <ClInclude Include="code\object.h" />
