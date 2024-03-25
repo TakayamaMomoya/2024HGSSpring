@@ -92,7 +92,22 @@ void CTutorial::Uninit(void)
 //=====================================================
 void CTutorial::Update(void)
 {
+	CInputManager* pInputManager = CInputManager::GetInstance();
+	CFade* pFade = CFade::GetInstance();
 
+	if (pInputManager == nullptr)
+	{
+		return;
+	}
+
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER))
+	{//ENTERキー押したら
+
+		CScene::SetScore(NULL);
+
+		//タイトル画面
+		pFade->SetFade(CScene::MODE_TITLE);
+	}
 }
 
 //=====================================================
