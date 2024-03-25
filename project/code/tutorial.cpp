@@ -60,6 +60,21 @@ CTutorial::~CTutorial()
 //=====================================================
 HRESULT CTutorial::Init(void)
 {
+	// Œ©o‚µ‚Ì¶¬
+	CObject2D* pCaption = nullptr;
+
+	pCaption = CObject2D::Create(0);
+
+	if (pCaption != nullptr)
+	{
+		pCaption->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
+		pCaption->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
+		pCaption->SetVtx();
+
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\tutorial.jpg");
+		pCaption->SetIdxTexture(nIdx);
+	}
+
 	return S_OK;
 }
 
