@@ -44,9 +44,12 @@ public:
 	static CScene *Create(MODE mode);
 	int GetTimer(void) { return m_nTimerTrans; }
 	void SetTimer(int nTime) { m_nTimerTrans = nTime; }
+	void SetScore(int nScore) { m_nScore = nScore; }
+	int GetScore(void) { return m_nScore; }
 
 private:
 	int m_nTimerTrans;	// 遷移タイマー
+	int m_nScore;		// スコア
 };
 
 #endif

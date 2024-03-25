@@ -8,12 +8,15 @@
 #include "manager.h"
 #include "score.h"
 #include "input.h"
+#include "inputkeyboard.h"
+#include "inputManager.h"
 #include "object2D.h"
 #include "texture.h"
 #include "number.h"
 #include "game.h"
 #include "fade.h"
 #include "sound.h"
+#include "player.h"
 #include <fstream>
 
 //マクロ定義
@@ -73,7 +76,7 @@ CRanking::~CRanking()
 HRESULT CRanking::Init(void)
 {
 	D3DXVECTOR3 posScore = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - (SCORE_WIDTH * 2.0f * 3.5f), 200.0f, 0.0f);	//位置
-	//m_nNum = CScore::GetInstance()->GetScore();		//スコア代入
+	m_nNum = CScene::GetScore();		//スコア代入
 
 	int nDigit;		//桁数
 
@@ -136,6 +139,16 @@ HRESULT CRanking::Init(void)
 		}
 	}
 
+	// プレイヤーモデルの設置
+	/*m_pMotion = CMotion::Create("data\\MOTION\\motionBeetle.txt");
+
+	if (m_pMotion != nullptr)
+	{
+		m_pMotion->SetPosition(POS_PLAYER);
+		m_pMotion->SetMotion(CPlayer::MOTION::MOTION_NEUTRAL);
+		m_pMotion->InitPose(CPlayer::MOTION::MOTION_NEUTRAL);
+	}*/
+
 	return S_OK;
 }
 
@@ -175,18 +188,26 @@ void CRanking::Update(void)
 {
 	//CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();		//キーボードの情報取得
 	//CInputJoyPad *pInputJoyPad = CManager::GetInstance()->GetInputJoyPad();			//パッドの情報取得
-	//CFade *pFade = CManager::GetInstance()->GetFade();			//フェードの情報取得
+	CFade* pFade = CFade::GetInstance();
+	CInputManager* pInputManager = CInputManager::GetInstance();
+	CInputKeyboard* pKeyboard = CInputKeyboard::GetInstance();
 
+	if (pInputManager == nullptr)
+	{
+		return;
+	}
 	m_nCntColor++;
 
-	//if (((pInputKeyboard->GetTrigger(DIK_RETURN) == true || pInputJoyPad->GetTrigger(pInputJoyPad->BUTTON_A, 0) == true)) ||
-	//	m_nCntTrans >= TRANS_TIME)
-	//{//ENTERキー押したら
+	if (((pKeyboard->GetTrigger(DIK_RETURN) == true/* || pInputManager->GetTrigger(CInputManager::BUTTON_A, 0) == true*/)) ||
+		m_nCntTrans >= TRANS_TIME)
+	{//ENTERキー押したら
 
-	//	//タイトル画面
-	//	pFade->SetFade(CScene::MODE_TITLE);
-	//	bReset = true;
-	//}
+		CScene::SetScore(NULL);
+
+		//タイトル画面
+		pFade->SetFade(CScene::MODE_TITLE);
+		bReset = true;
+	}
 
 	//if (CManager::GetInstance()->GetBgm() == false)
 	{
