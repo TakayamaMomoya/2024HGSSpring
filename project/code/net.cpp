@@ -19,7 +19,8 @@
 //*****************************************************
 namespace
 {
-const float RADIUS_COLLISION = 100.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float RADIUS_COLLISION = 200.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float INITIAL_HEIGHT = 300.0f;	// ‚‚³‚ÌÝ’è
 }
 
 //*****************************************************
@@ -61,6 +62,8 @@ CNet *CNet::Create(D3DXVECTOR3 pos)
 		{
 			pNet->Init();
 
+			pos.y += INITIAL_HEIGHT;
+
 			pNet->SetPosition(pos);
 		}
 	}
@@ -88,7 +91,7 @@ HRESULT CNet::Init(void)
 	}
 
 	// ƒ‚ƒfƒ‹“Çž
-	int nIdx = CModel::Load("data\\MODEL\\Net\\BigNet.x");
+	int nIdx = CModel::Load("data\\MODEL\\enemy\\InsectNet.x");
 	BindModel(nIdx);
 
 	// ‰e¶¬
@@ -102,6 +105,7 @@ HRESULT CNet::Init(void)
 			m_pShadow->SetIdxTexture(nIdxTex);
 
 			m_pShadow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+			m_pShadow->SetSize(0.0f, 0.0f);
 		}
 	}
 
