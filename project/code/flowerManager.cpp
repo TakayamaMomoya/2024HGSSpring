@@ -27,6 +27,8 @@ namespace
 const float TIME_FLOWER = 1.3f;	// 花を設置する時間
 const int RAND_FLOWER_MIN = 2000;	// ランダム距離最小値
 const int RAND_FLOWER_MAX = 4000;	// ランダム距離最大値
+const int MAX_FLOWER = 10;	// 周辺の花の最大数
+const float DIST_NEAR = 6000.0f;	// 花が近いと判断する距離
 }
 
 //=====================================================
@@ -87,11 +89,26 @@ void CFlowerManager::Uninit(void)
 //=====================================================
 void CFlowerManager::Update(void)
 {
+	int nNumFlowerNear = 0;
+
 	for (CFlower *pFlower : m_list)
 	{// 花の数チェック用
 		if (pFlower != nullptr)
 		{
-			CDebugProc::GetInstance()->Print("\n花～～～");
+			CPlayer *pPlayer = CPlayer::GetInstance();
+
+			D3DXVECTOR3 posPlayer = { 0.0f,0.0f,0.0f };
+			D3DXVECTOR3 pos = pFlower->GetPosition();
+
+			if (pPlayer != nullptr)
+			{
+				posPlayer = pPlayer->GetPosition();
+			}
+
+			if (universal::DistCmp(posPlayer, pos, DIST_NEAR, nullptr))
+			{
+				nNumFlowerNear++;
+			}
 		}
 	}
 
@@ -99,7 +116,7 @@ void CFlowerManager::Update(void)
 
 	m_fTimerFlower += fDeltaTime;
 
-	if (m_fTimerFlower >= TIME_FLOWER)
+	if (m_fTimerFlower >= TIME_FLOWER && nNumFlowerNear < MAX_FLOWER)
 	{// 取れる花の生成
 		CFlower *pFlower = CFlower::Create();
 
