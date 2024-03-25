@@ -30,6 +30,7 @@ public:
 	{
 		MOTION_NEUTRAL = 0,	// 待機
 		MOTION_WALK_FRONT,	// 前歩
+		MOTION_CATCH,	// 捕まったモーション
 		MOTION_MAX
 	};
 	enum STATE
@@ -73,15 +74,7 @@ private:
 	struct SFragMotion
 	{
 		bool bMove;	// 移動
-		bool bJump;	// ジャンプ
-		bool bDodge;	// 回避
-		bool bStamp;	// 踏みつけ
-		bool bShot;	// 射撃
-		bool bMelee;	// 近接攻撃
-		bool bAddAttack;	// 追加攻撃
-		bool bGrab;	// 掴み
-		bool bAir;	// 滞空
-		bool bStop;	// 急停止
+		bool bCatch;	// 捕まる
 	};
 	struct SInfo
 	{
@@ -95,6 +88,7 @@ private:
 		D3DXVECTOR3 rotDest;	// 目標の向き
 		float fTimerSeed;	// 種時間
 		float fTimerBloom;	// 花咲タイマー
+		float fTimerCatch;	// つかまりタイマー
 	};
 
 	void Load(void);
