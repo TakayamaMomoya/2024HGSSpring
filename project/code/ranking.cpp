@@ -8,7 +8,6 @@
 #include "manager.h"
 #include "score.h"
 #include "input.h"
-#include "inputkeyboard.h"
 #include "inputManager.h"
 #include "object2D.h"
 #include "object3D.h"
@@ -214,7 +213,6 @@ void CRanking::Update(void)
 {
 	CFade* pFade = CFade::GetInstance();
 	CInputManager* pInputManager = CInputManager::GetInstance();
-	CInputKeyboard* pKeyboard = CInputKeyboard::GetInstance();
 
 	if (pInputManager == nullptr)
 	{
@@ -222,7 +220,7 @@ void CRanking::Update(void)
 	}
 	m_nCntColor++;
 
-	if (((pKeyboard->GetTrigger(DIK_RETURN) == true/* || pInputManager->GetTrigger(CInputManager::BUTTON_A, 0) == true*/)) ||
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER) ||
 		m_nCntTrans >= TRANS_TIME)
 	{//ENTERƒL[‰Ÿ‚µ‚½‚ç
 
