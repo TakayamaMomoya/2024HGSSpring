@@ -35,6 +35,7 @@
 #include "particle.h"
 #include "flower.h"
 #include "score.h"
+#include "flowerManager.h"
 
 //*****************************************************
 // É}ÉNÉçíËã`
@@ -110,9 +111,9 @@ HRESULT CGame::Init(void)
 		{0.0f,-D3DX_PI * 0.5f,0.0f},
 	};
 
-	CFlower::Create();
-
 	CScore::Create();
+
+	CFlowerManager::Create();
 
 	return S_OK;
 }

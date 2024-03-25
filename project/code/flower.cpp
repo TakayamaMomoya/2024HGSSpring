@@ -11,6 +11,7 @@
 #include "flower.h"
 #include "collision.h"
 #include "player.h"
+#include "flowerManager.h"
 
 //*****************************************************
 // íËêîíËã`
@@ -34,6 +35,15 @@ CFlower::CFlower(int nPriority)
 	m_pCollisionSphere = nullptr;
 
 	m_nNumAll++;
+
+	CFlowerManager *pManager = CFlowerManager::GetInstance();
+
+	if (pManager != nullptr)
+	{
+		std::list<CFlower*> list = pManager->GetList();
+
+		list.push_back(this);
+	}
 }
 
 //=====================================================
@@ -42,6 +52,15 @@ CFlower::CFlower(int nPriority)
 CFlower::~CFlower()
 {
 	m_nNumAll--;
+
+	CFlowerManager *pManager = CFlowerManager::GetInstance();
+
+	if (pManager != nullptr)
+	{
+		std::list<CFlower*> list = pManager->GetList();
+
+		list.remove(this);
+	}
 }
 
 //=====================================================
