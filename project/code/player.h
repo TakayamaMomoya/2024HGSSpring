@@ -90,6 +90,7 @@ private:
 		CCollisionSphere *pCollisionSphere;	// 球の当たり判定
 		CCollisionSphere *pClsnAttack;	// 攻撃の当たり判定
 		CCollisionCube *pCollisionCube;	// 立方体の当たり判定
+		CObject3D *pGuide;	// ガイド表示
 		bool bLand;	// 着地しているかどうか
 		D3DXVECTOR3 rotDest;	// 目標の向き
 		float fTimerSeed;	// 種時間

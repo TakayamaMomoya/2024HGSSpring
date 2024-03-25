@@ -131,7 +131,7 @@ HRESULT CTitle::Init(void)
 	}
 
 	// プレイヤーモデルの設置
-	m_pMotion = CMotion::Create("data\\MOTION\\motionArms01.txt");
+	m_pMotion = CMotion::Create("data\\MOTION\\motionBeetle.txt");
 
 	if (m_pMotion != nullptr)
 	{

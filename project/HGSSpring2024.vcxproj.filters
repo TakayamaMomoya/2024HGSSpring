@@ -207,6 +207,9 @@
     <ClCompile Include="code\netManager.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="code\timer.cpp">
+      <Filter>ソース ファイル</Filter>
+    </ClCompile>
     <ClCompile Include="code\ranking.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
@@ -402,6 +405,9 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="code\netManager.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="code\timer.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="code\ranking.h">

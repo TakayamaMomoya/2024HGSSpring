@@ -25,7 +25,7 @@ const float DIST_CYLINDER = 1000.0f;
 const float DIST_LOOK = 1500.0f;
 const float MOVE_SPEED = 3.0f;						//移動スピード
 const float ROLL_SPEED = 0.02f;						//回転スピード
-const float DIST_CAMERA = 1000.0f;	// カメラの距離
+const float DIST_CAMERA = 1500.0f;	// カメラの距離
 }
 
 //=====================================================
