@@ -8,7 +8,6 @@
 #include "manager.h"
 #include "score.h"
 #include "input.h"
-#include "inputkeyboard.h"
 #include "inputManager.h"
 #include "object2D.h"
 #include "object3D.h"
@@ -79,9 +78,21 @@ CRanking::~CRanking()
 HRESULT CRanking::Init(void)
 {
 	D3DXVECTOR3 posScore = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - (SCORE_WIDTH * 3.0f), 200.0f, 0.0f);	//位置
-	m_nNum = CScene::GetScore();		//スコア代入
 
 	int nDigit;		//桁数
+
+		// サウンドインスタンスの取得
+	CSound* pSound = CSound::GetInstance();
+
+	if (pSound != nullptr)
+	{
+		// BGMの再生
+		pSound->Play(pSound->LABEL_BGM_RANKING);
+	}
+	else if (pSound == nullptr)
+	{
+		return E_FAIL;
+	}
 
 	// 見出しの生成
 	CObject2D* pCaption = nullptr;
@@ -190,6 +201,8 @@ void CRanking::Uninit(void)
 	//	pSound->Stop();
 	//}
 	
+	m_nNum = 0;
+
 	for (int nCntScore = 0; nCntScore < NUM_DIGIT * MAX_RANK; nCntScore++)
 	{
 		if (m_apNumber[nCntScore] != NULL)
@@ -213,7 +226,6 @@ void CRanking::Update(void)
 {
 	CFade* pFade = CFade::GetInstance();
 	CInputManager* pInputManager = CInputManager::GetInstance();
-	CInputKeyboard* pKeyboard = CInputKeyboard::GetInstance();
 
 	if (pInputManager == nullptr)
 	{
@@ -221,7 +233,7 @@ void CRanking::Update(void)
 	}
 	m_nCntColor++;
 
-	if (((pKeyboard->GetTrigger(DIK_RETURN) == true/* || pInputManager->GetTrigger(CInputManager::BUTTON_A, 0) == true*/)) ||
+	if (pInputManager->GetTrigger(CInputManager::BUTTON_ENTER) ||
 		m_nCntTrans >= TRANS_TIME)
 	{//ENTERキー押したら
 

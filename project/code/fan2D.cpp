@@ -22,7 +22,7 @@
 namespace
 {
 	const float INITIAL_RADIUS = 50.0f;	// 初期の半径
-	const char* TEX_PATH = "data\\TEXTURE\\UI\\gauge.png";	// テクスチャのパス
+	const char* TEX_PATH = "data\\TEXTURE\\UI\\circle.png";	// テクスチャのパス
 }
 
 //=====================================================

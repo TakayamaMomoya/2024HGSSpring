@@ -18,7 +18,7 @@
 //*****************************************************
 namespace
 {
-const float RADIUS_COLLISION = 100.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
+const float RADIUS_COLLISION = 200.0f;	// “–‚½‚è”»’è‚Ì”¼Œa
 const float ADD_SEED = 5.0f;	// Ží•t—^ŽžŠÔ
 }
 

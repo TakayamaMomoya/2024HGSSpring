@@ -15,12 +15,14 @@
 #include "game.h"
 #include "result.h"
 #include "debugproc.h"
+#include "ranking.h"
+#include "score.h"
 
 //*****************************************************
 // マクロ定義
 //*****************************************************
 #define NUM_PLACE	(2)	// 桁数
-#define INITIAL_TIME	(60)	// 初期の時間
+#define INITIAL_TIME	(10)	// 初期の時間
 
 //*****************************************************
 // 静的メンバ変数宣言

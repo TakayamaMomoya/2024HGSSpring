@@ -286,7 +286,9 @@ void CTitleStart::Update(CTitle *pTitle)
 		{
 			col.a = 0.0f;
 
-			pTitle->ChangeBehavior(new CTitleMenu);
+			CFade *pFade = CFade::GetInstance();
+
+			pFade->SetFade(CScene::MODE_GAME);
 
 			return;
 		}
