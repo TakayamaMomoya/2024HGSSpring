@@ -25,6 +25,7 @@ const float DIST_CYLINDER = 1000.0f;
 const float DIST_LOOK = 1500.0f;
 const float MOVE_SPEED = 3.0f;						//移動スピード
 const float ROLL_SPEED = 0.02f;						//回転スピード
+const float DIST_CAMERA = 400.0f;	// カメラの距離
 }
 
 //=====================================================
@@ -71,9 +72,9 @@ void CFollowPlayer::Update(CCamera *pCamera)
 	//目標の視点設定
 	pInfoCamera->posVDest =
 	{
-		pInfoCamera->posRDest.x - sinf(pInfoCamera->rot.x) * sinf(pInfoCamera->rot.y - D3DX_PI * 0.02f) * pInfoCamera->fLength,
-		pInfoCamera->posRDest.y - cosf(pInfoCamera->rot.x) * pInfoCamera->fLength,
-		pInfoCamera->posRDest.z - sinf(pInfoCamera->rot.x) * cosf(pInfoCamera->rot.y - D3DX_PI * 0.02f) * pInfoCamera->fLength
+		pInfoCamera->posRDest.x,
+		pInfoCamera->posRDest.y + DIST_CAMERA,
+		pInfoCamera->posRDest.z - DIST_CAMERA
 	};
 
 #ifdef _DEBUG

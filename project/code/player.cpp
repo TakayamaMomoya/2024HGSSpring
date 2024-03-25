@@ -19,7 +19,6 @@
 #include "slow.h"
 #include "camera.h"
 #include "manager.h"
-#include "bullet.h"
 #include "effect3D.h"
 #include "meshfield.h"
 #include "cameraBehavior.h"
@@ -240,7 +239,7 @@ void CPlayer::Update(void)
 {
 	CSlow *pSlow = CSlow::GetInstance();
 
-	if (m_info.state != CPlayer::STATE::STATE_DEATH && GetMotion() != MOTION_APPER)
+	if (m_info.state != CPlayer::STATE::STATE_DEATH)
 	{
 		// 入力
 		Input();
@@ -269,57 +268,8 @@ void CPlayer::Update(void)
 		SetPosition(pos);
 	}
 
-	// 重力
-	int nMotion = GetMotion();
-	
-	if (nMotion != MOTION_SHOT && 
-		nMotion != MOTION_ASSAULT && 
-		nMotion != MOTION_MELEE && 
-		nMotion != MOTION_MELEE2 &&
-		nMotion != MOTION_GRAB &&
-		nMotion != MOTION_THROW &&
-		nMotion != MOTION_DODGE &&
-		m_fragMotion.bStamp == false)
-	{
-		if (pSlow != nullptr)
-		{
-			float fScale = pSlow->GetScale();
-
-			move.x += (0 - move.x) * FACT_MOVE * fScale;
-			move.z += (0 - move.z) * FACT_MOVE * fScale;
-
-			move.y -= GRAVITY * fScale;
-		}
-		else
-		{
-			float fScale = pSlow->GetScale();
-
-			move.x *= FACT_MOVE;
-			move.z *= FACT_MOVE;
-
-			move.y -= GRAVITY * fScale;
-		}
-	}
-	else
-	{
-		if (nMotion == MOTION_DODGE)
-		{
-			move.x += (0 - move.x) * 0.02f;
-			move.y += (0 - move.y) * 0.5f;
-			move.z += (0 - move.z) * 0.02f;
-		}
-		else
-		{
-			move.x += (0 - move.x) * 0.05f;
-			move.y += (0 - move.y) * 0.1f;
-			move.z += (0 - move.z) * 0.05f;
-		}
-	}
-
-	if (move.y > 24.0f)
-	{// 上昇力制限
-		move.y = 24.0f;
-	}
+	move.x += (0 - move.x) * 0.05f;
+	move.z += (0 - move.z) * 0.05f;
 
 	SetMove(move);
 
@@ -396,94 +346,60 @@ void CPlayer::InputMove(void)
 	CInputManager::SAxis axis = pInputManager->GetAxis();
 	D3DXVECTOR3 axisMove = axis.axisMove;
 
-	// 入力方向の取得
-	D3DXVECTOR3 vecInput = { 0.0f,0.0f,0.0f };
-
-	vecInput += {sinf(pInfoCamera->rot.y + D3DX_PI * 0.5f) * axis.axisMove.x, 0.0f, cosf(pInfoCamera->rot.y + D3DX_PI * 0.5f) * axis.axisMove.x};
-	vecInput += {sinf(pInfoCamera->rot.y) * axis.axisMove.z, 0.0f, cosf(pInfoCamera->rot.y) * axis.axisMove.z};
-
 	float fLengthAxis = D3DXVec3Length(&axisMove);
 
 	int nMotion = GetMotion();
 
-	if ((fLengthAxis >= 0.3f && nMotion != MOTION_SHOT) || nMotion == MOTION_DODGE)
+	if (fLengthAxis >= 0.3f)
 	{// 通常移動時の目標向き設定
-		if (nMotion == MOTION_DODGE)
-		{
-			D3DXVECTOR3 move = GetMove();
-
-			m_info.rotDest.y = atan2f(move.x, move.z);
-		}
-		else
-		{
-			m_info.rotDest.y = atan2f(vecInput.x, vecInput.z);
-		}
+		m_info.rotDest.y = atan2f(axisMove.x, axisMove.z);
 
 		CDebugProc *pDebugProc = CDebugProc::GetInstance();
 
 		pDebugProc->Print("\n通常移動");
 	}
 
-	if (nMotion != MOTION_ASSAULT &&
-		nMotion != MOTION_MELEE &&
-		nMotion != MOTION_MELEE2 &&
-		nMotion != MOTION_GRAB &&
-		nMotion != MOTION_THROW &&
-		nMotion != MOTION_DODGE &&
-		m_fragMotion.bStamp == false)
-	{
-		// 方向入力の取得
-		CInputManager::SAxis axis = pInputManager->GetAxis();
-		D3DXVECTOR3 axisMove = axis.axisMove;
+	D3DXVECTOR3 vecMove = { 0.0f,0.0f,0.0f };
+	D3DXVECTOR3 rot = GetRotation();
 
-		D3DXVECTOR3 vecMove = { 0.0f,0.0f,0.0f };
-		D3DXVECTOR3 rot = GetRotation();
-
-		float fLengthAxis = D3DXVec3Length(&axisMove);
-
-		if (m_fragMotion.bMove && fLengthAxis <= 0.3f)
-		{// 急停止フラグ
-			m_fragMotion.bStop = true;
-		}
-
-		fLengthAxis *= SPEED_MOVE;
-
-		vecMove -= {sinf(rot.y) * fLengthAxis, 0.0f, cosf(rot.y) * fLengthAxis};
-
-		// 移動速度の設定
-		D3DXVECTOR3 move = GetMove();
-
-		D3DXVec3Normalize(&vecMove, &vecMove);
-		vecMove *= m_param.fSpeedMove;
-
-		if (pSlow != nullptr)
-		{
-			float fScale = pSlow->GetScale();
-
-			vecMove *= fScale;
-		}
-
-		if (m_info.bLand)
-		{
-			if (pInputManager->GetTrigger(CInputManager::BUTTON_JUMP))
-			{// ジャンプ操作
-				m_fragMotion.bJump = true;
-				m_fragMotion.bMove = false;
-
-				Sound::Play(CSound::LABEL_SE_BOOST00);
-			};
-		}
-		
-		float fAngleInput = atan2f(axisMove.x, axisMove.z);
-
-		move += vecMove;
-
-		SetMove(move);
+	if (m_fragMotion.bMove && fLengthAxis <= 0.3f)
+	{// 急停止フラグ
+		m_fragMotion.bStop = true;
 	}
-	else if (nMotion == MOTION_ASSAULT)
+
+	fLengthAxis *= SPEED_MOVE;
+
+	vecMove -= {sinf(rot.y) * fLengthAxis, 0.0f, cosf(rot.y) * fLengthAxis};
+
+	// 移動速度の設定
+	D3DXVECTOR3 move = GetMove();
+
+	D3DXVec3Normalize(&vecMove, &vecMove);
+	vecMove *= m_param.fSpeedMove;
+
+	if (pSlow != nullptr)
 	{
-		AddMoveForward(SPEED_ASSAULT);
+		float fScale = pSlow->GetScale();
+
+		vecMove *= fScale;
 	}
+
+	if (m_info.bLand)
+	{
+		if (pInputManager->GetTrigger(CInputManager::BUTTON_JUMP))
+		{// ジャンプ操作
+			m_fragMotion.bJump = true;
+			m_fragMotion.bMove = false;
+
+			Sound::Play(CSound::LABEL_SE_BOOST00);
+		};
+	}
+
+	float fAngleInput = atan2f(axisMove.x, axisMove.z);
+
+	move += vecMove;
+
+	SetMove(move);
 
 #ifdef _DEBUG
 	CInputKeyboard *pKeyboard = CInputKeyboard::GetInstance();
@@ -565,26 +481,6 @@ void CPlayer::InputAttack(void)
 	{
 		return;
 	}
-
-	if (pInputManager->GetTrigger(CInputManager::BUTTON_GRAB))
-	{// 掴み処理
-
-		if (nMotion != MOTION_THROW && nMotion != MOTION_GRAB)
-		{
-			m_fragMotion.bGrab = true;
-		}
-
-		if (nMotion == MOTION_THROW)
-		{
-			// スローをキャンセル
-			CSlow *pSlow = CSlow::GetInstance();
-
-			if (pSlow != nullptr)
-			{
-				pSlow->SetScale(1.0f);
-			}
-		}
-	}
 }
 
 //=====================================================
@@ -600,62 +496,29 @@ void CPlayer::Rotation(void)
 
 	int nMotion = GetMotion();
 
-	if (nMotion == MOTION_SHOT || nMotion == MOTION_ASSAULT || nMotion == MOTION_MELEE || nMotion == MOTION_MELEE2 || nMotion == MOTION_THROW)
+	if (fLenghtMove >= 6.0f)
 	{
-		// カメラ取得
-		CCamera *pCamera = CManager::GetCamera();
-
-		if (pCamera == nullptr)
-		{
-			return;
-		}
-
-		CCamera::Camera *pInfoCamera = pCamera->GetCamera();
-
 		// 向きの補正
 		D3DXVECTOR3 rot = GetRotation();
-		D3DXVECTOR3 rotCamera = pInfoCamera->rot;
 
-		rotCamera.x -= D3DX_PI * 0.5f;
-		rotCamera.y;
+		SetRotation(rot);
 
-		universal::LimitRot(&rotCamera.x);
-		universal::LimitRot(&rotCamera.y);
-
-		universal::FactingRot(&m_info.rotDest.x, -rotCamera.x, 0.15f);
-		universal::FactingRot(&m_info.rotDest.y, rotCamera.y, 0.15f);
+		if (m_info.bLand)
+		{
+			m_fragMotion.bMove = true;
+		}
 	}
 	else
 	{
-		if (fLenghtMove >= 6.0f)
-		{
-			// 向きの補正
-			D3DXVECTOR3 rot = GetRotation();
-
-			SetRotation(rot);
-
-			if (m_info.bLand)
-			{
-				m_fragMotion.bMove = true;
-			}
-		}
-		else
-		{
-			m_fragMotion.bMove = false;
-		}
-
-		m_info.rotDest.x = 0.0f;
+		m_fragMotion.bMove = false;
 	}
+
+	m_info.rotDest.x = 0.0f;
 
 	// 向きの補正
 	D3DXVECTOR3 rot = GetRotation();
 
 	float fFact = 0.1f;
-
-	if (nMotion == MOTION_SHOT || nMotion == MOTION_ASSAULT)
-	{
-		fFact = 0.4f;
-	}
 
 	universal::FactingRot(&rot.y, m_info.rotDest.y + D3DX_PI, fFact);
 	universal::FactingRot(&rot.x, m_info.rotDest.x, fFact);
@@ -747,7 +610,7 @@ void CPlayer::ManageCollision(void)
 			SetMove(move);
 		}
 
-		m_info.pCollisionSphere->PushCollision(&pos, CCollision::TAG::TAG_ENEMY);
+		m_info.pCollisionSphere->PushCollision(&pos, CCollision::TAG::TAG_FLOWER);
 
 		if (pos.y > 4000.0f)
 		{
@@ -758,15 +621,6 @@ void CPlayer::ManageCollision(void)
 
 		m_info.bLand = bLandMesh || bLandBlock;
 		m_fragMotion.bAir = !m_info.bLand;
-
-		if (m_info.bLand)
-		{
-			if (nMotion == MOTION_AIR)
-			{
-				m_fragMotion.bJump = false;
-				m_fragMotion.bAir = false;
-			}
-		}
 	}
 }
 
@@ -778,113 +632,7 @@ void CPlayer::ManageMotion(void)
 	int nMotion = GetMotion();
 	bool bFinish = IsFinish();
 
-	if (nMotion == MOTION_APPER)
-	{
-		if (bFinish)
-		{
-			SetMotion(MOTION_NEUTRAL);
-
-			Camera::ChangeBehavior(new CFollowPlayer);
-
-			CUIManager *pUIManager = CUIManager::GetInstance();
-
-			if (pUIManager != nullptr)
-			{
-				pUIManager->EnableDisp(true);
-			}
-		}
-	}
-	else if (nMotion == MOTION_DEATH)
-	{
-		if (bFinish)
-		{
-			Death();
-		}
-	}
-	else if (m_fragMotion.bDodge)
-	{
-		if (nMotion != MOTION_DODGE)
-		{
-			SetMotion(MOTION_DODGE);
-		}
-		else
-		{
-			if (bFinish)
-			{
-				m_fragMotion.bDodge = false;
-			}
-		}
-	}
-	else if (m_fragMotion.bStamp || nMotion == MOTION_STAMP)
-	{// 踏みつけモーション
-		if (nMotion != MOTION_STAMP)
-		{
-			SetMotion(MOTION_STAMP);
-		}
-		else
-		{
-			if (bFinish)
-			{
-				SetMotion(MOTION_AIR);
-			}
-		}
-	}
-	else if (nMotion == MOTION_THROW)
-	{// 投げモーション
-		if (bFinish)
-		{
-			SetMotion(MOTION_AIR);
-		}
-	}
-	else if (m_fragMotion.bGrab)
-	{// 掴みモーション
-		if (nMotion != MOTION_GRAB)
-		{
-			SetMotion(MOTION_GRAB);
-
-			AddMoveForward(POW_GRAB);
-		}
-		else
-		{
-			if (bFinish)
-			{
-				m_fragMotion.bGrab = false;
-			}
-		}
-	}
-	else if (m_fragMotion.bAir)
-	{// 滞空モーション
-		if (nMotion != MOTION_AIR)
-		{
-			SetMotion(MOTION_AIR);
-		}
-	}
-	else if (m_fragMotion.bJump)
-	{// ジャンプモーション
-		if (nMotion != MOTION_JUMP)
-		{
-			SetMotion(MOTION_JUMP);
-		}
-		else
-		{
-
-		}
-	}
-	else if (m_fragMotion.bStop)
-	{// 急停止モーション
-		if (nMotion != MOTION_STOP)
-		{
-			SetMotion(MOTION_STOP);
-		}
-		else
-		{
-			if (bFinish)
-			{
-				m_fragMotion.bStop = false;
-			}
-		}
-	}
-	else if (m_fragMotion.bMove)
+	if (m_fragMotion.bMove)
 	{// 歩きモーション
 		if (nMotion != MOTION_WALK_FRONT)
 		{
@@ -951,32 +699,6 @@ void CPlayer::Event(EVENT_INFO *pEventInfo)
 
 	D3DXVECTOR3 pos = { mtxParent._41,mtxParent._42 ,mtxParent._43 };
 
-	if (nMotion == MOTION_APPER)
-	{// 出現時の煙
-		Sound::Play(CSound::LABEL_SE_LAND00);
-
-		D3DXVECTOR3 posParticle = GetPosition();
-
-		CParticle::Create(posParticle, CParticle::TYPE::TYPE_APPER_SMOKE);
-	}
-
-	if (nMotion == MOTION_DODGE)
-	{// 回避
-		D3DXMATRIX *pMtxPart = GetParts(pEventInfo->nIdxParent)->pParts->GetMatrix();
-
-		universal::SetOffSet(pMtxPart, *pMtxPart,D3DXVECTOR3(0.0f,0.0f,0.0f), D3DXVECTOR3(-1.0f, 0.0f, 0.0f));
-
-		CInpact::Create(0.1f, pMtxPart);
-	}
-
-	if (nMotion == MOTION_JUMP)
-	{// ジャンプ
-		D3DXVECTOR3 move = GetMove();
-
-		move.y += POW_JUMP;
-
-		SetMove(move);
-	}
 }
 
 //=====================================================
@@ -996,44 +718,7 @@ void CPlayer::Draw(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
-	if (m_info.state != STATE_DEATH)
-	{
-		m_info.fLife -= fDamage;
 
-		if (m_info.fLife <= 0.0f)
-		{// 死亡判定
-			Sound::Play(CSound::LABEL_SE_WARNING00);
-
-			m_info.fLife = 0.0f;
-
-			m_info.state = STATE_DEATH;
-
-			SetMotion(MOTION::MOTION_DEATH);
-		}
-		else
-		{// ダメージ判定
-			m_info.state = STATE_DAMAGE;
-
-			// カメラ揺れ
-			CCamera *pCamera = CManager::GetCamera();
-
-			if (pCamera != nullptr)
-			{
-				if (fDamage < 0.5f)
-				{
-					pCamera->SetQuake(0.2f, 0.2f, 10);
-				}
-				else if (fDamage < 1.0f)
-				{
-					pCamera->SetQuake(0.4f, 0.4f, 10);
-				}
-				else
-				{
-					pCamera->SetQuake(1.5f, 1.5f, 20);
-				}
-			}
-		}
-	}
 }
 
 //=====================================================

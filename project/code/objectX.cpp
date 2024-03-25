@@ -48,9 +48,9 @@ HRESULT CObjectX::Init(void)
 
 	m_fScale = 1.0f;
 
-	if (m_pModel != nullptr)
+	if (m_pModel == nullptr)
 	{
-		int nIdx = CModel::Load("data\\MODEL\\weapon\\minigun.x");
+		int nIdx = CModel::Load("data\\MODEL\\block\\bill00.x");
 
 		// モデル読込
 		BindModel(nIdx);
@@ -294,7 +294,6 @@ void CObjectX::CalcMatrix(void)
 	D3DXMatrixTranslation(&mtxTrans,
 		m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
 
 	//ワールドマトリックス設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);

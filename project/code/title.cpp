@@ -136,8 +136,8 @@ HRESULT CTitle::Init(void)
 	if (m_pMotion != nullptr)
 	{
 		m_pMotion->SetPosition(POS_PLAYER);
-		m_pMotion->SetMotion(CPlayer::MOTION::MOTION_NEUTRAL_TITLE);
-		m_pMotion->InitPose(CPlayer::MOTION::MOTION_NEUTRAL_TITLE);
+		m_pMotion->SetMotion(CPlayer::MOTION::MOTION_NEUTRAL);
+		m_pMotion->InitPose(CPlayer::MOTION::MOTION_NEUTRAL);
 	}
 
 	return S_OK;
