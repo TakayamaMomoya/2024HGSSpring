@@ -14,6 +14,7 @@
 #include "object3D.h"
 #include "texture.h"
 #include "manager.h"
+#include "particle.h"
 
 //*****************************************************
 // 定数定義
@@ -174,6 +175,9 @@ void CNet::Update(void)
 				if (universal::DistCmp(pos, posPlayer, RADIUS_COLLISION, nullptr))
 				{
 					pPlayer->Hit(1.0f);
+
+					// ここでパーティクル
+					CParticle::Create(posPlayer, CParticle::TYPE::TYPE_TURN_EXPLOSION);
 				}
 
 				SetEmissiveCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));

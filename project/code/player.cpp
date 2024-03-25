@@ -610,6 +610,9 @@ void CPlayer::ManageCollision(void)
 			{
 				m_info.pGauge->SetRadius(RADIUS_GAUGE * 1.3f);
 			}
+
+			// ここでパーティクル
+			CParticle::Create(pos, CParticle::TYPE::TYPE_EXPLOSION);
 		}
 
 		if (m_info.pCollisionCube != nullptr)
