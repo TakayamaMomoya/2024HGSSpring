@@ -36,6 +36,7 @@
 #include "flower.h"
 #include "score.h"
 #include "flowerManager.h"
+#include "net.h"
 
 //*****************************************************
 // É}ÉNÉçíËã`
@@ -114,6 +115,8 @@ HRESULT CGame::Init(void)
 	CScore::Create();
 
 	CFlowerManager::Create();
+
+	CNet::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	return S_OK;
 }

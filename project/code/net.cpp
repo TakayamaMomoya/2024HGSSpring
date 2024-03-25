@@ -1,0 +1,176 @@
+//*****************************************************
+//
+// 網の処理[net.cpp]
+// Author:髙山桃也
+//
+//*****************************************************
+
+//*****************************************************
+// インクルード
+//*****************************************************
+#include "net.h"
+#include "collision.h"
+#include "player.h"
+#include "object3D.h"
+#include "texture.h"
+
+//*****************************************************
+// 定数定義
+//*****************************************************
+namespace
+{
+const float RADIUS_COLLISION = 100.0f;	// 当たり判定の半径
+}
+
+//*****************************************************
+// 静的メンバ変数宣言
+//*****************************************************
+int CNet::m_nNumAll = 0;	// 総数
+
+//=====================================================
+// コンストラクタ
+//=====================================================
+CNet::CNet(int nPriority)
+{
+	m_pCollisionSphere = nullptr;
+	m_pShadow = nullptr;
+
+	m_nNumAll++;
+}
+
+//=====================================================
+// デストラクタ
+//=====================================================
+CNet::~CNet()
+{
+	m_nNumAll--;
+}
+
+//=====================================================
+// 生成処理
+//=====================================================
+CNet *CNet::Create(D3DXVECTOR3 pos)
+{
+	CNet *pNet = nullptr;
+
+	if (pNet == nullptr)
+	{
+		pNet = new CNet;
+
+		if (pNet != nullptr)
+		{
+			pNet->Init();
+
+			pNet->SetPosition(pos);
+		}
+	}
+
+	return pNet;
+}
+
+//=====================================================
+// 初期化処理
+//=====================================================
+HRESULT CNet::Init(void)
+{
+	// 継承クラスの初期化
+	CObjectX::Init();
+
+	if (m_pCollisionSphere == nullptr)
+	{// 当たり判定生成
+		m_pCollisionSphere = CCollisionSphere::Create(CCollision::TAG_NET, CCollision::TYPE_SPHERE, this);
+
+		if (m_pCollisionSphere != nullptr)
+		{
+			m_pCollisionSphere->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			m_pCollisionSphere->SetRadius(RADIUS_COLLISION);
+		}
+	}
+
+	// モデル読込
+	int nIdx = CModel::Load("data\\MODEL\\Net\\BigNet.x");
+	BindModel(nIdx);
+
+	// 影生成
+	if (m_pShadow == nullptr)
+	{
+		m_pShadow = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+		if (m_pShadow != nullptr)
+		{
+			int nIdxTex = Texture::GetIdx("data\\TEXTURE\\EFFECT\\effect000.png");
+			m_pShadow->SetIdxTexture(nIdxTex);
+
+			m_pShadow->SetColor(D3DXCOLOR(0.0f, 0.0f, 0.0f, 1.0f));
+		}
+	}
+
+	return S_OK;
+}
+
+//=====================================================
+// 終了処理
+//=====================================================
+void CNet::Uninit(void)
+{
+	// 当たり判定削除
+	DeleteCollision();
+
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->Uninit();
+		m_pShadow = nullptr;
+	}
+
+	// 継承クラスの終了
+	CObjectX::Uninit();
+}
+
+//=====================================================
+// 当たり判定の削除
+//=====================================================
+void CNet::DeleteCollision(void)
+{
+	if (m_pCollisionSphere != nullptr)
+	{// 当たり判定の消去
+		m_pCollisionSphere->Uninit();
+
+		m_pCollisionSphere = nullptr;
+	}
+}
+
+//=====================================================
+// 更新処理
+//=====================================================
+void CNet::Update(void)
+{
+	// 継承クラスの更新
+	CObjectX::Update();
+}
+
+//=====================================================
+// 描画処理
+//=====================================================
+void CNet::Draw(void)
+{
+	// 継承クラスの描画
+	CObjectX::Draw();
+}
+
+//=====================================================
+// 位置設定
+//=====================================================
+void CNet::SetPosition(D3DXVECTOR3 pos)
+{
+	if (m_pCollisionSphere != nullptr)
+	{
+		m_pCollisionSphere->SetPosition(pos);
+	}
+
+	if (m_pShadow != nullptr)
+	{
+		m_pShadow->SetPosition(D3DXVECTOR3(pos.x, 1.0f, pos.z));
+	}
+
+	CObjectX::SetPosition(pos);
+}
