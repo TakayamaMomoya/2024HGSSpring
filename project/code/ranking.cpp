@@ -79,7 +79,6 @@ CRanking::~CRanking()
 HRESULT CRanking::Init(void)
 {
 	D3DXVECTOR3 posScore = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - (SCORE_WIDTH * 3.0f), 200.0f, 0.0f);	//位置
-	m_nNum = CScene::GetScore();		//スコア代入
 
 	int nDigit;		//桁数
 
@@ -190,6 +189,8 @@ void CRanking::Uninit(void)
 	//	pSound->Stop();
 	//}
 	
+	m_nNum = 0;
+
 	for (int nCntScore = 0; nCntScore < NUM_DIGIT * MAX_RANK; nCntScore++)
 	{
 		if (m_apNumber[nCntScore] != NULL)

@@ -44,6 +44,7 @@ public:
 	void Reset(void);
 	void Set(int nNum);
 	void SetSound(bool bgm) { m_bBgm = bgm; }
+	static void SetScore(int nValue) { m_nNum = nValue; }
 
 private:
 	static CNumber *m_apNumber[NUM_DIGIT * MAX_RANK];

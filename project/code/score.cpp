@@ -13,6 +13,7 @@
 #include "number.h"
 #include "UI.h"
 #include "texture.h"
+#include "ranking.h"
 
 //*****************************************************
 // ’è”’è‹`
@@ -96,6 +97,10 @@ HRESULT CScore::Init(void)
 //=====================================================
 void CScore::Uninit(void)
 {
+	CRanking::SetScore(GetScore());
+
+	m_pScore = nullptr;
+
 	Release();
 }
 
