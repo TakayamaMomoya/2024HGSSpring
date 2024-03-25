@@ -19,6 +19,7 @@
 class CCollisionSphere;
 class CCollisionCube;
 class CObject3D;
+class CFan2D;
 
 //*****************************************************
 // クラスの定義
@@ -68,7 +69,14 @@ public:
 	void Hit(float fDamage);
 	float GetLife(void) { return m_info.fLife; }
 	SParam GetParam(void) { return m_param; }
-	void AddTimeSeed(float fTime) { m_info.fTimerSeed += fTime; }
+	void AddTimeSeed(float fTime)
+	{
+		m_info.fTimerSeed += fTime;  
+		if (m_info.fTimerSeed > 10.0f)
+		{
+			m_info.fTimerSeed = 10.0f;
+		};
+	}
 	void AddLimitBloom(float fValue) { m_info.fLimitBloom += fValue; }
 
 private:
@@ -85,6 +93,7 @@ private:
 		CCollisionSphere *pClsnAttack;	// 攻撃の当たり判定
 		CCollisionCube *pCollisionCube;	// 立方体の当たり判定
 		CObject3D *pGuide;	// ガイド表示
+		CFan2D *pGauge;	// 種ゲージ
 		bool bLand;	// 着地しているかどうか
 		D3DXVECTOR3 rotDest;	// 目標の向き
 		float fTimerSeed;	// 種時間

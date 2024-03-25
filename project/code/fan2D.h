@@ -41,6 +41,7 @@ public:
 	void SetRateAngle(float fAngle) { m_fRateAngle = fAngle; }
 	float GetMaxAngle(void) { return m_fRateAngle; }
 	void SetRadius(float fRadius) { m_fRadius = fRadius; }
+	float GetRadius(void) { return m_fRadius; }
 	void SetAngleMax(float fAngle) { m_fAngleMax = fAngle; }
 
 private:

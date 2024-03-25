@@ -35,6 +35,7 @@
 #include "texture.h"
 #include "flowerManager.h"
 #include "flower.h"
+#include "fan2D.h"
 
 //*****************************************************
 // 定数定義
@@ -47,6 +48,8 @@ const float SPEED_MOVE = 2.0f;	// 移動速度
 const float FACT_MOVE = 0.1f;	// 移動の減衰係数
 const float TIME_BLOOM = 0.6f;	// 花咲時間
 const float TIME_ESCAPE = 2.0f;	// つかまり時間
+const float MAXTIME_SEED = 10.0f;	// 種まき最大時間
+const float RADIUS_GAUGE = 100.0f;	// ゲージ半径
 }
 
 //*****************************************************
@@ -143,15 +146,19 @@ HRESULT CPlayer::Init(void)
 		}
 	}
 
-	if (m_info.pGuide == nullptr)
+	if (m_info.pGauge == nullptr)
 	{
-		//m_info.pGuide = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_info.pGauge = CFan2D::Create(6);
 
-		if (m_info.pGuide != nullptr)
+		if (m_info.pGauge != nullptr)
 		{
-			m_info.pGuide->SetSize(500.0f, 500.0f);
-			int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\arrow.png");
-			m_info.pGuide->SetIdxTexture(nIdx);
+			D3DXVECTOR3 pos = SCRN_MID;
+			pos.x -= 100.0f;
+			m_info.pGauge->SetPosition(pos);
+			m_info.pGauge->SetRadius(RADIUS_GAUGE);
+
+			m_info.pGauge->SetRateAngle(0.0f);
+			m_info.pGauge->SetVtx();
 		}
 	}
 
@@ -265,6 +272,22 @@ void CPlayer::Update(void)
 
 	// 継承クラスの更新
 	CMotion::Update();
+
+	if (m_info.pGauge != nullptr)
+	{
+		// 大きさ調整
+		float fRadius = m_info.pGauge->GetRadius();
+
+		fRadius += (RADIUS_GAUGE - fRadius) * 0.1f;
+
+		m_info.pGauge->SetRadius(fRadius);
+
+		// 割合計算
+		float fRate = m_info.fTimerSeed / MAXTIME_SEED;
+
+		m_info.pGauge->SetRateAngle(fRate);
+		m_info.pGauge->SetVtx();
+	}
 
 // デバッグ処理
 #if _DEBUG
@@ -582,6 +605,11 @@ void CPlayer::ManageCollision(void)
 			}
 
 			AddLimitBloom(-0.05f);
+
+			if (m_info.pGauge != nullptr)
+			{
+				m_info.pGauge->SetRadius(RADIUS_GAUGE * 1.3f);
+			}
 		}
 
 		if (m_info.pCollisionCube != nullptr)
