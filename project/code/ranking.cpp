@@ -147,7 +147,7 @@ HRESULT CRanking::Init(void)
 			{//g—p‚³‚ê‚Ä‚È‚¢‚Æ‚«
 
 				//”š¶¬
-				m_apNumber[nCnt] = CNumber::Create(4, m_ranking[nCntRank].nRanking);
+				m_apNumber[nCnt] = CNumber::Create(5, m_ranking[nCntRank].nRanking);
 
 				if (m_apNumber[nCnt] != NULL)
 				{//¶¬o—ˆ‚½‚ç
