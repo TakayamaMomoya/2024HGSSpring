@@ -11,12 +11,14 @@
 #include "inputkeyboard.h"
 #include "inputManager.h"
 #include "object2D.h"
+#include "object3D.h"
 #include "texture.h"
 #include "number.h"
 #include "game.h"
 #include "fade.h"
 #include "sound.h"
 #include "player.h"
+#include "camera.h"
 #include <fstream>
 
 //マクロ定義
@@ -60,6 +62,7 @@ CRanking::CRanking()
 	m_nCntColor = 0;		//ランキングの色変更間隔
 	m_bCol = true;			//色変更するか
 	m_nRankUpdate = -1;
+	m_pMotion = nullptr;
 }
 
 //==============================================================
@@ -75,7 +78,7 @@ CRanking::~CRanking()
 //==============================================================
 HRESULT CRanking::Init(void)
 {
-	D3DXVECTOR3 posScore = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - (SCORE_WIDTH * 2.0f * 3.5f), 200.0f, 0.0f);	//位置
+	D3DXVECTOR3 posScore = D3DXVECTOR3(SCREEN_WIDTH * 0.5f - (SCORE_WIDTH * 3.0f), 200.0f, 0.0f);	//位置
 	m_nNum = CScene::GetScore();		//スコア代入
 
 	int nDigit;		//桁数
@@ -83,16 +86,32 @@ HRESULT CRanking::Init(void)
 	// 見出しの生成
 	CObject2D* pCaption = nullptr;
 
-	pCaption = CObject2D::Create(4);
+	pCaption = CObject2D::Create(0);
 
 	if (pCaption != nullptr)
 	{
-		pCaption->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-		pCaption->SetSize(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f);
+		pCaption->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 80.0f, 0.0f));
+		pCaption->SetSize(200.0f, 60.0f);
 		pCaption->SetVtx();
 
-		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\ranking.jpg");
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\menu01.png");
 		pCaption->SetIdxTexture(nIdx);
+	}
+
+	//背景生成
+	CObject3D* pBg = nullptr;
+
+	pBg = CObject3D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	pBg->EnableLighting(false);
+
+	if(pBg != nullptr)
+	{
+		pBg->SetSize(SCREEN_WIDTH * 1.5f, SCREEN_HEIGHT * 2.0f);
+		pBg->SetPosition(D3DXVECTOR3(700.0f, 400.0f, -400.0f));
+		pBg->SetBgRotation(D3DXVECTOR3(0.5f * D3DX_PI, 0.0f, 0.0f));
+
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\ranking.jpg");
+		pBg->SetIdxTexture(nIdx);
 	}
 
 	//リセット処理
@@ -117,14 +136,10 @@ HRESULT CRanking::Init(void)
 			{//使用されてないとき
 
 				//数字生成
-				m_apNumber[nCnt] = CNumber::Create(8, m_ranking[nCntRank].nRanking);
+				m_apNumber[nCnt] = CNumber::Create(4, m_ranking[nCntRank].nRanking);
 
 				if (m_apNumber[nCnt] != NULL)
 				{//生成出来たら
-
-					nDigit = (int)pow(10, (NUM_DIGIT - nCntScore));		//桁数
-
-					//m_aTexU[nCntScore] = (int)(m_ranking[nCntRank].nRanking % nDigit / (nDigit * 0.1f));
 
 					//大きさ設定
 					m_apNumber[nCnt]->SetSizeAll(SCORE_WIDTH, SCORE_HEIGHT);
@@ -139,15 +154,25 @@ HRESULT CRanking::Init(void)
 		}
 	}
 
+	CCamera* pCamera = CManager::GetCamera();
+	if (pCamera == nullptr)
+		return E_FAIL;
+
+	CCamera::Camera* pInfoCamera = pCamera->GetCamera();
+
+	pInfoCamera->posV = { 700.0f, 400.0f, 1300.0f };
+	pInfoCamera->posR = { 700.0f, 400.0f, -300.0f };
+
 	// プレイヤーモデルの設置
-	/*m_pMotion = CMotion::Create("data\\MOTION\\motionBeetle.txt");
+	m_pMotion = CMotion::Create("data\\MOTION\\motionBeetle.txt");
 
 	if (m_pMotion != nullptr)
 	{
-		m_pMotion->SetPosition(POS_PLAYER);
+		m_pMotion->SetPosition(D3DXVECTOR3(0.0f, 400.0f, -300.0f));
+		m_pMotion->Rotation(D3DXVECTOR3(0.5f * D3DX_PI, 0.0f, 0.0f));
 		m_pMotion->SetMotion(CPlayer::MOTION::MOTION_NEUTRAL);
 		m_pMotion->InitPose(CPlayer::MOTION::MOTION_NEUTRAL);
-	}*/
+	}
 
 	return S_OK;
 }
@@ -186,8 +211,6 @@ void CRanking::Uninit(void)
 //==============================================================
 void CRanking::Update(void)
 {
-	//CInputKeyboard *pInputKeyboard = CManager::GetInstance()->GetInputKeyboard();		//キーボードの情報取得
-	//CInputJoyPad *pInputJoyPad = CManager::GetInstance()->GetInputJoyPad();			//パッドの情報取得
 	CFade* pFade = CFade::GetInstance();
 	CInputManager* pInputManager = CInputManager::GetInstance();
 	CInputKeyboard* pKeyboard = CInputKeyboard::GetInstance();
@@ -242,6 +265,20 @@ void CRanking::Update(void)
 			m_nCntColor = 0;
 		}
 	}
+
+	//float fRot = m_pMotion->GetRotation().x + 0.000001f;
+
+	//差分を修正
+	/*if (fRot < -D3DX_PI)
+	{
+		fRot += D3DX_PI * 2;
+	}
+	else if (fRot > D3DX_PI)
+	{
+		fRot -= D3DX_PI * 2;
+	}*/
+
+	m_pMotion->Rotation(D3DXVECTOR3(0.0f, 0.0f, 0.1f));
 
 	m_nCntTrans++;		//遷移するまでの時間
 }
