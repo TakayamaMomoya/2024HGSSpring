@@ -40,9 +40,7 @@ CFlower::CFlower(int nPriority)
 
 	if (pManager != nullptr)
 	{
-		std::list<CFlower*> list = pManager->GetList();
-
-		list.push_back(this);
+		pManager->PushBack(this);
 	}
 }
 
@@ -57,9 +55,7 @@ CFlower::~CFlower()
 
 	if (pManager != nullptr)
 	{
-		std::list<CFlower*> list = pManager->GetList();
-
-		list.remove(this);
+		pManager->Remove(this);
 	}
 }
 
@@ -104,6 +100,11 @@ HRESULT CFlower::Init(void)
 			m_pCollisionSphere->SetRadius(RADIUS_COLLISION);
 		}
 	}
+
+	int nIdx = CModel::Load("data\\MODEL\\flower\\BigFlower.x");
+
+	// ÉÇÉfÉãì«çû
+	BindModel(nIdx);
 
 	return S_OK;
 }

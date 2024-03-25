@@ -35,6 +35,8 @@ public:
 	void Update(void);
 	void Draw(void);
 	std::list<CFlower*> GetList(void) { return m_list; }
+	void PushBack(CFlower *pFlower) { m_list.push_back(pFlower); }
+	void Remove(CFlower *pFlower) { m_list.remove(pFlower); }
 
 private:
 	float m_fTimerFlower;	// 花設置タイマー
