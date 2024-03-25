@@ -9,6 +9,11 @@
 #define _SCORE_H_
 
 //*****************************************************
+// 前方宣言
+//*****************************************************
+class CNumber;
+
+//*****************************************************
 // インクルード
 //*****************************************************
 #include "object.h"
@@ -29,11 +34,14 @@ public:
 	void Update(void);
 	void Draw(void);
 	void AddScore(int nValue);
-	int GetScore(void) { return m_nScore; }
+	int GetScore(void) { return m_nScoreDest; }
 
 private:
 	int m_nScore;	// スコア
 	static CScore *m_pScore;	// 自身のポインタ
+	int m_nScoreDest;	// 目標のスコア値
+	CNumber *m_pObjNumber;	// 数字のポインタ
+
 };
 
 #endif

@@ -10,13 +10,14 @@
 //*****************************************************
 #include "score.h"
 #include "debugproc.h"
+#include "number.h"
 
 //*****************************************************
 // 定数定義
 //*****************************************************
 namespace
 {
-
+const int NUM_PLACE = 4;	// 桁数
 }
 
 //*****************************************************
@@ -30,6 +31,8 @@ CScore *CScore::m_pScore = nullptr;	// 自身のポインタ
 CScore::CScore(int nPriority) : CObject(nPriority)
 {
 	m_nScore = 0;
+	m_nScoreDest = 0;
+	m_pObjNumber = nullptr;
 }
 
 //=====================================================
@@ -63,6 +66,15 @@ CScore *CScore::Create(void)
 //=====================================================
 HRESULT CScore::Init(void)
 {
+	if (m_pObjNumber == nullptr)
+	{
+		m_pObjNumber = CNumber::Create(NUM_PLACE, m_nScore);
+
+
+		m_pObjNumber->SetPosition(D3DXVECTOR3(1100.0f, 80.0f, 0.0f));
+		m_pObjNumber->SetSizeAll(15.0f, 32.5f);
+	}
+
 	return S_OK;
 }
 
@@ -79,7 +91,13 @@ void CScore::Uninit(void)
 //=====================================================
 void CScore::Update(void)
 {
+	//スコア値上昇演出==============================
+	m_nScore += (int)((m_nScoreDest - m_nScore) * 0.1f);
 
+	if (m_pObjNumber != nullptr)
+	{
+		m_pObjNumber->SetValue(m_nScore, NUM_PLACE);
+	}
 }
 
 //=====================================================
@@ -87,7 +105,7 @@ void CScore::Update(void)
 //=====================================================
 void CScore::AddScore(int nValue)
 {
-	m_nScore += nValue;
+	m_nScoreDest += nValue;
 }
 
 //=====================================================
@@ -99,6 +117,6 @@ void CScore::Draw(void)
 
 	if (pDebug != nullptr)
 	{
-		pDebug->Print("\nスコア[%d]", m_nScore);
+		pDebug->Print("\nスコア[%d]", m_nScoreDest);
 	}
 }
