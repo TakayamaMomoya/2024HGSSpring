@@ -122,16 +122,16 @@ void CLight::Update(void)
 	for (int i = 0; i < MAX_LIGHT; i++)
 	{
 		// 色の補正
-		m_aInfo[i].col.r += (m_aInfo[i].colDest.r - m_aInfo[i].col.r) * SPEED_CHANGE_COL;
-		m_aInfo[i].col.g += (m_aInfo[i].colDest.g - m_aInfo[i].col.g) * SPEED_CHANGE_COL;
-		m_aInfo[i].col.b += (m_aInfo[i].colDest.b - m_aInfo[i].col.b) * SPEED_CHANGE_COL;
-		m_aInfo[i].col.a += (m_aInfo[i].colDest.a - m_aInfo[i].col.a) * SPEED_CHANGE_COL;
+		//m_aInfo[i].col.r += (m_aInfo[i].colDest.r - m_aInfo[i].col.r) * SPEED_CHANGE_COL;
+		//m_aInfo[i].col.g += (m_aInfo[i].colDest.g - m_aInfo[i].col.g) * SPEED_CHANGE_COL;
+		//m_aInfo[i].col.b += (m_aInfo[i].colDest.b - m_aInfo[i].col.b) * SPEED_CHANGE_COL;
+		//m_aInfo[i].col.a += (m_aInfo[i].colDest.a - m_aInfo[i].col.a) * SPEED_CHANGE_COL;
 
-		// ライトの拡散光の設定
-		m_aLight[i].Diffuse = m_aInfo[i].col;
+		//// ライトの拡散光の設定
+		//m_aLight[i].Diffuse = m_aInfo[i].col;
 
-		// ライト設定
-		pDevice->SetLight(i, &m_aLight[i]);
+		//// ライト設定
+		//pDevice->SetLight(i, &m_aLight[i]);
 	}
 }
 
