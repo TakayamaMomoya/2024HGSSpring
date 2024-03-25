@@ -288,7 +288,7 @@ void CTitleStart::Update(CTitle *pTitle)
 
 			CFade *pFade = CFade::GetInstance();
 
-			pFade->SetFade(CScene::MODE_GAME);
+			pFade->SetFade(CScene::MODE_TUTORIAL);
 
 			return;
 		}

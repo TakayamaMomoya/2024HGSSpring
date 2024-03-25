@@ -154,7 +154,7 @@ HRESULT CPlayer::Init(void)
 		if (m_info.pGauge != nullptr)
 		{
 			D3DXVECTOR3 pos = SCRN_MID;
-			pos.x -= 100.0f;
+			pos.x -= 200.0f;
 			m_info.pGauge->SetPosition(pos);
 			m_info.pGauge->SetRadius(RADIUS_GAUGE);
 

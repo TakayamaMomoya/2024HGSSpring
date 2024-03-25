@@ -106,7 +106,7 @@ void CTutorial::Update(void)
 		CScene::SetScore(NULL);
 
 		//ƒ^ƒCƒgƒ‹‰æ–Ê
-		pFade->SetFade(CScene::MODE_TITLE);
+		pFade->SetFade(CScene::MODE_GAME);
 	}
 }
 
