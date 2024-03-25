@@ -20,6 +20,7 @@ public:
 		LABEL_BGM_TITLE = 0,				// タイトルBGM
 		LABEL_BGM_GAME,					// ゲームBGM
 		LABEL_BGM_BOSS00,					// ボスBGM０
+		LABEL_BGM_RANKING,				// ランキングBGM
 		LABEL_SE_START_GAME,			// ゲームスタート
 
 		LABEL_SE_HIT00,					// ヒット０
@@ -94,10 +95,11 @@ private:
 	// サウンドの情報
 	SOUNDINFO m_aSoundInfo[LABEL_MAX] =
 	{
-		{ "data/SOUND/BGM/title.wav", -1 },				// タイトルBGM
-		{ "data/SOUND/BGM/game.wav", -1 },				// ゲームBGM
+		{ "data/SOUND/BGM/bgm000.wav", -1 },				// タイトルBGM
+		{ "data/SOUND/BGM/bgm001.wav", -1 },				// ゲームBGM
 		{ "data/SOUND/BGM/boss00.wav", -1 },				// ボスBGM０
-		{ "data/SOUND/SE/enter.wav",0 },			// ゲームスタート
+		{ "data/SOUND/BGM/bgm002.wav", -1},			// リザルトBGM
+		{ "data/SOUND/SE/select.wav",0 },			// ゲームスタート
 
 		{ "data/SOUND/SE/hit00.wav",0 },					// ヒット０
 		{ "data/SOUND/SE/hit01.wav",0 },					// ヒット１
@@ -118,7 +120,7 @@ private:
 		{ "data/SOUND/SE/slash00.wav",0 },					// 斬撃０
 
 		{ "data/SOUND/SE/pause.wav",0 },				// ポーズ
-		{ "data/SOUND/SE/pause_arrow.wav",0 },			// 選択
+		{ "data/SOUND/SE/cursor.wav",0 },			// 選択
 		{ "data/SOUND/SE/pause_enter.wav",0 },			// 決定
 	};
 
