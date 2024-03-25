@@ -33,7 +33,7 @@
 //*****************************************************
 namespace
 {
-	const D3DXVECTOR3 LOGO_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.27f, 150.0f, 0.0f);	// ƒƒS‚ÌˆÊ’u
+	const D3DXVECTOR3 LOGO_POS = D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 325.0f, 0.0f);	// ƒƒS‚ÌˆÊ’u
 	const float LOGO_WIDTH = 875.0f * 0.35f;	// ƒƒS‚Ì•
 	const float LOGO_HEIGHT = 320.0f * 0.35f;	// ƒƒS‚Ì‚‚³
 	const char* LOGO_PATH = "data\\TEXTURE\\UI\\logo000.png";	// ƒƒS‚ÌƒpƒX
@@ -118,15 +118,15 @@ HRESULT CTitle::Init(void)
 
 	CCamera::Camera *pInfoCamera = pCamera->GetCamera();
 
-	pInfoCamera->posV = { 45.38f,84.71f,270.10f };
-	pInfoCamera->posR = { -454.28f,331.03f,878.09f };
+	pInfoCamera->posV = { 1000.38f,1000.00f,500.10f };
+	pInfoCamera->posR = { -15000.28f,-15000.03f,500.09f };
 
 	// ”wŒiƒIƒuƒWƒFƒNƒg‚Ì¶¬
 	CObjectX* pArsenal = CObjectX::Create();
 
 	if (pArsenal != nullptr)
 	{
-		int nIdx = CModel::Load("data\\MODEL\\other\\arsenal.x");
+		int nIdx = CModel::Load("data\\MODEL\\other\\forest.x");
 		pArsenal->BindModel(nIdx);
 	}
 
