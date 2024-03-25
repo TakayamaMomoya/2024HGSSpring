@@ -269,9 +269,6 @@
     <ClInclude Include="code\fan3D.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
-    <ClInclude Include="code\game.h">
-      <Filter>ヘッダー ファイル</Filter>
-    </ClInclude>
     <ClInclude Include="code\inpact.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
@@ -405,6 +402,9 @@
       <Filter>ソース ファイル</Filter>
     </ClInclude>
     <ClInclude Include="code\timer.h">
+      <Filter>ソース ファイル</Filter>
+    </ClInclude>
+    <ClInclude Include="code\game.h">
       <Filter>ソース ファイル</Filter>
     </ClInclude>
   </ItemGroup>

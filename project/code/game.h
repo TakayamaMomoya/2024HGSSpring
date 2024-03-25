@@ -18,6 +18,7 @@
 //*****************************************************
 class CGame;
 class CPlayer;
+class CUI;
 
 //*****************************************************
 // クラスの定義
@@ -59,6 +60,7 @@ private:
 	static STATE m_state;	// 状態
 	static CGame *m_pGame;	// 自身のポインタ
 
+	CUI *m_pResult;	// 結果発表のポリゴン
 	int m_nAddReward;	// 加算報酬
 	int m_nCntState;	// 状態遷移カウンター
 	bool m_bStop;	// 停止状態

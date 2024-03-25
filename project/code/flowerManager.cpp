@@ -13,6 +13,7 @@
 #include "manager.h"
 #include "flower.h"
 #include "player.h"
+#include "game.h"
 
 //*****************************************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
@@ -89,6 +90,9 @@ void CFlowerManager::Uninit(void)
 //=====================================================
 void CFlowerManager::Update(void)
 {
+	if (CGame::GetState() != CGame::STATE_NORMAL)
+		return;
+
 	int nNumFlowerNear = 0;
 
 	for (CFlower *pFlower : m_list)

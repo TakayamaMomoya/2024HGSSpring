@@ -33,6 +33,7 @@ int CFlower::m_nNumAll = 0;	// 総数
 CFlower::CFlower(int nPriority)
 {
 	m_pCollisionSphere = nullptr;
+	m_bDeath = false;
 
 	m_nNumAll++;
 
@@ -141,6 +142,20 @@ void CFlower::Update(void)
 {
 	// 継承クラスの更新
 	CObjectX::Update();
+
+	if (m_bDeath)
+	{
+		D3DXCOLOR col = GetEmissiveCol();
+
+		col.a -= 0.1f;
+
+		if (col.a <= 0.0f)
+		{
+			Uninit();
+		}
+
+		SetEmissiveCol(col);
+	}
 }
 
 //=====================================================
@@ -174,6 +189,10 @@ void CFlower::Hit(float fDamage)
 	{
 		return;
 	}
+
+	m_bDeath = true;
+
+	SetEmissiveCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 
 	DeleteCollision();
 
