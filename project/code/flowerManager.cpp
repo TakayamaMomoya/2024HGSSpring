@@ -25,10 +25,10 @@ CFlowerManager *CFlowerManager::m_pFlowerManager = nullptr;	// 自身のポインタ
 //*****************************************************
 namespace
 {
-const float TIME_FLOWER = 1.3f;	// 花を設置する時間
+const float TIME_FLOWER = 0.3f;	// 花を設置する時間
 const int RAND_FLOWER_MIN = 2000;	// ランダム距離最小値
 const int RAND_FLOWER_MAX = 4000;	// ランダム距離最大値
-const int MAX_FLOWER = 10;	// 周辺の花の最大数
+const int MAX_FLOWER = 6;	// 周辺の花の最大数
 const float DIST_NEAR = 6000.0f;	// 花が近いと判断する距離
 }
 
