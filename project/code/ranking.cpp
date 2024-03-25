@@ -81,7 +81,7 @@ HRESULT CRanking::Init(void)
 
 	int nDigit;		//桁数
 
-	// サウンドインスタンスの取得
+		// サウンドインスタンスの取得
 	CSound* pSound = CSound::GetInstance();
 
 	if (pSound != nullptr)
@@ -117,11 +117,11 @@ HRESULT CRanking::Init(void)
 
 	if(pBg != nullptr)
 	{
-		pBg->SetSize(SCREEN_WIDTH * 10.0f, SCREEN_HEIGHT * 6.0f);
+		pBg->SetSize(SCREEN_WIDTH * 2.0f, SCREEN_HEIGHT * 3.0f);
 		pBg->SetPosition(D3DXVECTOR3(700.0f, 400.0f, -400.0f));
 		pBg->SetBgRotation(D3DXVECTOR3(0.5f * D3DX_PI, 0.0f, 0.0f));
 
-		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\ranking000.jpg");
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\BG\\ranking.jpg");
 		pBg->SetIdxTexture(nIdx);
 	}
 
