@@ -43,7 +43,7 @@ HRESULT CLight::Init(void)
 	m_aLight[0].Type = D3DLIGHT_DIRECTIONAL;
 
 	//ライトの拡散光の設定
-	m_aLight[0].Diffuse = INTIIAL_COLOR[0];
+	m_aLight[0].Diffuse = D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f);
 
 	//ライトの方向設定
 	vecDir = D3DXVECTOR3(-1.4f, 0.24f, -2.21f);
@@ -61,7 +61,7 @@ HRESULT CLight::Init(void)
 	m_aLight[1].Type = D3DLIGHT_DIRECTIONAL;
 
 	//ライトの拡散光の設定
-	m_aLight[1].Diffuse = INTIIAL_COLOR[1];
+	m_aLight[1].Diffuse = D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f);
 
 	//ライトの方向設定
 	vecDir = D3DXVECTOR3(1.42f, -0.8f, 0.08f);
@@ -79,7 +79,7 @@ HRESULT CLight::Init(void)
 	m_aLight[2].Type = D3DLIGHT_DIRECTIONAL;
 
 	//ライトの拡散光の設定
-	m_aLight[2].Diffuse = INTIIAL_COLOR[2];
+	m_aLight[2].Diffuse = D3DXCOLOR(0.9f, 0.9f, 0.9f, 1.0f);
 
 	//ライトの方向設定
 	vecDir = D3DXVECTOR3(-0.29f, -0.8f, 0.55f);
@@ -91,14 +91,6 @@ HRESULT CLight::Init(void)
 
 	//ライト有効化
 	pDevice->LightEnable(2, TRUE);
-
-	// 色の初期化
-	ResetColDest();
-
-	for (int i = 0; i < MAX_LIGHT; i++)
-	{
-		m_aInfo[i].col = INTIIAL_COLOR[i];
-	}
 
 	return S_OK;
 }
