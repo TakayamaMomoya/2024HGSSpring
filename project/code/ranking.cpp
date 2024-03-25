@@ -82,7 +82,7 @@ HRESULT CRanking::Init(void)
 
 	int nDigit;		//桁数
 
-		// サウンドインスタンスの取得
+	// サウンドインスタンスの取得
 	CSound* pSound = CSound::GetInstance();
 
 	if (pSound != nullptr)

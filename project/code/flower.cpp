@@ -12,6 +12,7 @@
 #include "collision.h"
 #include "player.h"
 #include "flowerManager.h"
+#include "sound.h"
 
 //*****************************************************
 // ’è”’è‹`
@@ -201,5 +202,12 @@ void CFlower::Hit(float fDamage)
 	if (pPlayer != nullptr)
 	{
 		pPlayer->AddTimeSeed(ADD_SEED);
+
+		CSound* pSound = CSound::GetInstance();
+
+		if (pSound != nullptr)
+		{
+			pSound->Play(pSound->LABEL_SE_FLOWERING);
+		}
 	}
 }
