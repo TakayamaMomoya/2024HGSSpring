@@ -29,6 +29,7 @@ public:
 	void Update(void);
 	void Draw(void);
 	void AddScore(int nValue);
+	int GetScore(void) { return m_nScore; }
 
 private:
 	int m_nScore;	// スコア
