@@ -11,6 +11,8 @@
 #include "score.h"
 #include "debugproc.h"
 #include "number.h"
+#include "UI.h"
+#include "texture.h"
 
 //*****************************************************
 // 定数定義
@@ -70,9 +72,20 @@ HRESULT CScore::Init(void)
 	{
 		m_pObjNumber = CNumber::Create(NUM_PLACE, m_nScore);
 
+		m_pObjNumber->SetPosition(D3DXVECTOR3(900.0f, 70.0f, 0.0f));
+		m_pObjNumber->SetSizeAll(20.0f, 40.0f);
+	}
 
-		m_pObjNumber->SetPosition(D3DXVECTOR3(1100.0f, 80.0f, 0.0f));
-		m_pObjNumber->SetSizeAll(15.0f, 32.5f);
+	CUI *pUI = CUI::Create();
+
+	if (pUI != nullptr)
+	{
+		pUI->SetPosition(D3DXVECTOR3(1100.0f, 70.0f, 0.0f));
+		pUI->SetSize(60.0f, 40.0f);
+		pUI->SetVtx();
+
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\SquareCentimeter.png");
+		pUI->SetIdxTexture(nIdx);
 	}
 
 	return S_OK;
@@ -91,8 +104,17 @@ void CScore::Uninit(void)
 //=====================================================
 void CScore::Update(void)
 {
+	int nScoreOld = m_nScore;
+
 	//スコア値上昇演出==============================
-	m_nScore += (int)((m_nScoreDest - m_nScore) * 0.1f);
+	if (m_nScore >= m_nScoreDest)
+	{
+		m_nScore = m_nScoreDest;
+	}
+	else
+	{
+		m_nScore += 2;
+	}
 
 	if (m_pObjNumber != nullptr)
 	{
@@ -117,6 +139,7 @@ void CScore::Draw(void)
 
 	if (pDebug != nullptr)
 	{
-		pDebug->Print("\nスコア[%d]", m_nScoreDest);
+		pDebug->Print("\nスコア[%d]", m_nScore);
+		pDebug->Print("\nスコア目標値[%d]", m_nScoreDest);
 	}
 }

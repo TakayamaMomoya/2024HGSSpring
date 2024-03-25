@@ -45,7 +45,7 @@ const char* BODY_PATH = "data\\MOTION\\motionBeetle.txt";	// 見た目のパス
 const float GRAVITY = 0.50f;	// 重力
 const float SPEED_MOVE = 2.0f;	// 移動速度
 const float FACT_MOVE = 0.1f;	// 移動の減衰係数
-const float TIME_BLOOM = 0.4f;	// 花咲時間
+const float TIME_BLOOM = 0.6f;	// 花咲時間
 const float TIME_ESCAPE = 2.0f;	// つかまり時間
 }
 
@@ -172,6 +172,8 @@ HRESULT CPlayer::Init(void)
 
 	EnableShadow(true);
 	SetPosShadow(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+
+	m_info.fLimitBloom = TIME_BLOOM;
 
 	return S_OK;
 }
@@ -454,7 +456,7 @@ void CPlayer::ManageTimeSeed(void)
 		// 花を咲かせる
 		m_info.fTimerBloom += fDeltaTime;
 
-		if (m_info.fTimerBloom >= TIME_BLOOM)
+		if (m_info.fTimerBloom >= m_info.fLimitBloom)
 		{
 			CFlowerPlayer *pFlower = CFlowerPlayer::Create();
 
@@ -578,6 +580,8 @@ void CPlayer::ManageCollision(void)
 			{
 				pObj->Hit(1.0f);
 			}
+
+			AddLimitBloom(-0.05f);
 		}
 
 		if (m_info.pCollisionCube != nullptr)

@@ -69,6 +69,7 @@ public:
 	float GetLife(void) { return m_info.fLife; }
 	SParam GetParam(void) { return m_param; }
 	void AddTimeSeed(float fTime) { m_info.fTimerSeed += fTime; }
+	void AddLimitBloom(float fValue) { m_info.fLimitBloom += fValue; }
 
 private:
 	struct SFragMotion
@@ -88,6 +89,7 @@ private:
 		D3DXVECTOR3 rotDest;	// 目標の向き
 		float fTimerSeed;	// 種時間
 		float fTimerBloom;	// 花咲タイマー
+		float fLimitBloom;	// 花咲制限
 		float fTimerCatch;	// つかまりタイマー
 	};
 
