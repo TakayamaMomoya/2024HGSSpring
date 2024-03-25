@@ -41,6 +41,8 @@ public:
 		LABEL_SE_IMPACT01,					// 衝撃１
 		LABEL_SE_SLASH00,					// 斬撃０
 
+		LABEL_SE_FLOWERING,				// 花
+
 		LABEL_SE_PAUSE_MENU,			// ポーズ
 		LABEL_SE_PAUSE_ARROW,			// ポーズ移動
 		LABEL_SE_PAUSE_ENTER,			// ポーズ選択
@@ -118,6 +120,8 @@ private:
 		{ "data/SOUND/SE/impact00.wav",0 },					// 衝撃０
 		{ "data/SOUND/SE/impact01.wav",0 },					// 衝撃１
 		{ "data/SOUND/SE/slash00.wav",0 },					// 斬撃０
+
+		{ "data/SOUND/SE/flowering.wav", 0},				// 花
 
 		{ "data/SOUND/SE/pause.wav",0 },				// ポーズ
 		{ "data/SOUND/SE/cursor.wav",0 },			// 選択

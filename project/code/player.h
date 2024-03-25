@@ -100,6 +100,7 @@ private:
 		float fTimerBloom;	// 花咲タイマー
 		float fLimitBloom;	// 花咲制限
 		float fTimerCatch;	// つかまりタイマー
+		float fTimerTrans;	// 遷移タイマー
 	};
 
 	void Load(void);

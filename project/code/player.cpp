@@ -50,6 +50,7 @@ const float TIME_BLOOM = 0.6f;	// ‰ÔçŽžŠÔ
 const float TIME_ESCAPE = 2.0f;	// ‚Â‚©‚Ü‚èŽžŠÔ
 const float MAXTIME_SEED = 10.0f;	// Ží‚Ü‚«Å‘åŽžŠÔ
 const float RADIUS_GAUGE = 100.0f;	// ƒQ[ƒW”¼Œa
+const float TIME_DAMAGE = 3.0f;	// –³“GŽžŠÔ
 }
 
 //*****************************************************
@@ -233,6 +234,11 @@ void CPlayer::Uninit(void)
 void CPlayer::Update(void)
 {
 	CSlow *pSlow = CSlow::GetInstance();
+
+	if (m_info.fTimerTrans >= 0.0f)
+	{
+		m_info.fTimerTrans -= CManager::GetDeltaTime();
+	}
 
 	if (m_info.state != CPlayer::STATE::STATE_DEATH)
 	{
@@ -764,7 +770,14 @@ void CPlayer::Draw(void)
 //=====================================================
 void CPlayer::Hit(float fDamage)
 {
+	if (m_info.fTimerTrans > 0.0f)
+	{
+		return;
+	}
+
 	m_fragMotion.bCatch = true;
+
+	m_info.fTimerTrans = TIME_DAMAGE;
 }
 
 //=====================================================

@@ -17,12 +17,14 @@
 #include "debugproc.h"
 #include "ranking.h"
 #include "score.h"
+#include "UI.h"
+#include "texture.h"
 
 //*****************************************************
 // マクロ定義
 //*****************************************************
 #define NUM_PLACE	(2)	// 桁数
-#define INITIAL_TIME	(10)	// 初期の時間
+#define INITIAL_TIME	(60)	// 初期の時間
 
 //*****************************************************
 // 静的メンバ変数宣言
@@ -83,6 +85,18 @@ CTimer *CTimer::Create(void)
 HRESULT CTimer::Init(void)
 {
 	m_nSecond = INITIAL_TIME;
+
+	CUI *pUI = CUI::Create();
+
+	if (pUI != nullptr)
+	{
+		pUI->SetPosition(D3DXVECTOR3(400.0f, 80.0f, 0.0f));
+		pUI->SetSize(100.0f, 60.0f);
+		pUI->SetVtx();
+
+		int nIdx = Texture::GetIdx("data\\TEXTURE\\UI\\lifespan.png");
+		pUI->SetIdxTexture(nIdx);
+	}
 
 	return S_OK;
 }
