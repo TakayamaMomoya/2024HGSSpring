@@ -180,7 +180,7 @@ HRESULT CRanking::Init(void)
 	if (m_pMotion != nullptr)
 	{
 		m_pMotion->SetPosition(D3DXVECTOR3(0.0f, 400.0f, -300.0f));
-		m_pMotion->Rotation(D3DXVECTOR3(0.5f * D3DX_PI, 0.0f, 0.0f));
+		m_pMotion->Rotation(D3DXVECTOR3(0.5f * -D3DX_PI, 0.0f, 0.0f));
 		m_pMotion->SetMotion(CPlayer::MOTION::MOTION_NEUTRAL);
 		m_pMotion->InitPose(CPlayer::MOTION::MOTION_NEUTRAL);
 	}
