@@ -19,27 +19,8 @@ public:
 	{
 		LABEL_BGM_TITLE = 0,				// タイトルBGM
 		LABEL_BGM_GAME,					// ゲームBGM
-		LABEL_BGM_BOSS00,					// ボスBGM０
 		LABEL_BGM_RANKING,				// ランキングBGM
 		LABEL_SE_START_GAME,			// ゲームスタート
-
-		LABEL_SE_HIT00,					// ヒット０
-		LABEL_SE_HIT01,					// ヒット１
-		LABEL_SE_SHOT00,					// 射撃０
-		LABEL_SE_SHOT01,					// 射撃１
-		LABEL_SE_SHOT02,					// 射撃２
-		LABEL_SE_SHOT03,					// 射撃３
-		LABEL_SE_SHOT04,					// 射撃４
-		LABEL_SE_EXPLOSION00,					// 爆発０
-		LABEL_SE_EXPLOSION01,					// 爆発１
-		LABEL_SE_DASH00,					// ダッシュ０
-		LABEL_SE_DASH01,					// ダッシュ１
-		LABEL_SE_BOOST00,					// ブースト０
-		LABEL_SE_WARNING00,					// 警告０
-		LABEL_SE_LAND00,					// 着地０
-		LABEL_SE_IMPACT00,					// 衝撃０
-		LABEL_SE_IMPACT01,					// 衝撃１
-		LABEL_SE_SLASH00,					// 斬撃０
 
 		LABEL_SE_FLOWERING,				// 花
 		LABEL_SE_INSECTNET,				// 網
@@ -100,27 +81,8 @@ private:
 	{
 		{ "data/SOUND/BGM/bgm000.wav", -1 },				// タイトルBGM
 		{ "data/SOUND/BGM/bgm001.wav", -1 },				// ゲームBGM
-		{ "data/SOUND/BGM/boss00.wav", -1 },				// ボスBGM０
 		{ "data/SOUND/BGM/bgm002.wav", -1},			// リザルトBGM
 		{ "data/SOUND/SE/select.wav",0 },			// ゲームスタート
-
-		{ "data/SOUND/SE/hit00.wav",0 },					// ヒット０
-		{ "data/SOUND/SE/hit01.wav",0 },					// ヒット１
-		{ "data/SOUND/SE/shot00.wav",0 },					// 射撃０
-		{ "data/SOUND/SE/shot01.wav",0 },					// 射撃１
-		{ "data/SOUND/SE/shot02.wav",0 },					// 射撃２
-		{ "data/SOUND/SE/shot03.wav",0 },					// 射撃３
-		{ "data/SOUND/SE/shot04.wav",0 },					// 射撃４
-		{ "data/SOUND/SE/explosion00.wav",0 },					// 爆発０
-		{ "data/SOUND/SE/explosion01.wav",0 },					// 爆発１
-		{ "data/SOUND/SE/dash00.wav",0 },					// ダッシュ０
-		{ "data/SOUND/SE/dash01.wav",0 },					// ダッシュ１
-		{ "data/SOUND/SE/boost00.wav",0 },					// ブースト０
-		{ "data/SOUND/SE/warning00.wav",-1 },					// 警告０
-		{ "data/SOUND/SE/land00.wav",0 },					// 着地０
-		{ "data/SOUND/SE/impact00.wav",0 },					// 衝撃０
-		{ "data/SOUND/SE/impact01.wav",0 },					// 衝撃１
-		{ "data/SOUND/SE/slash00.wav",0 },					// 斬撃０
 
 		{ "data/SOUND/SE/flowering.wav", 0},				// 花
 		{ "data/SOUND/SE/insectnet.wav", 0},				// 花

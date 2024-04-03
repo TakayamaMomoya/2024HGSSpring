@@ -15,7 +15,6 @@
 #include <stdio.h>
 #include "collision.h"
 #include "fade.h"
-#include "block.h"
 
 //*****************************************************
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾

@@ -785,33 +785,6 @@ void CPlayer::Hit(float fDamage)
 //=====================================================
 void CPlayer::Death(void)
 {
-	CSound *pSound = CSound::GetInstance();
-
-	if (pSound != nullptr)
-	{
-		pSound->Stop(CSound::LABEL_SE_WARNING00);
-	}
-
-	Sound::Play(CSound::LABEL_SE_EXPLOSION01);
-
-	D3DXVECTOR3 pos = GetMtxPos(0);
-
-	// エフェクト発生
-	CAnimEffect3D *pAnimManager = CAnimEffect3D::GetInstance();
-
-	if (pAnimManager != nullptr)
-	{
-		CAnim3D *pAnim = pAnimManager->CreateEffect(pos, CAnimEffect3D::TYPE_EXPLOSION);
-
-		if (pAnim != nullptr)
-		{
-			pAnim->SetSize(600.0f, 600.0f);
-		}
-	}
-
-	// 破片生成
-	CDebrisSpawner::Create(pos, CDebrisSpawner::TYPE::TYPE_DEATH);
-	
 	Uninit();
 }
 
